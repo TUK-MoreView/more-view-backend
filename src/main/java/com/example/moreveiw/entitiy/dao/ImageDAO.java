@@ -1,4 +1,5 @@
-package com.example.moreveiw.domain;
+package com.example.moreveiw.entitiy.dao;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,22 +7,23 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "text")
+@Table(name = "image")
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TextDAO {
+public class ImageDAO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private Long projectId;
 
-    private String text;
+    private String imageUri;
     private String x;
     private String y;
 
-    private float size;
-    private String color;
+    private float width;
+    private float height;
+
 }

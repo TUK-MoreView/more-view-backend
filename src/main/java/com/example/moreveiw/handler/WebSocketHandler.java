@@ -1,7 +1,7 @@
 package com.example.moreveiw.handler;
 
-import com.example.moreveiw.domain.APIMessage;
-import com.example.moreveiw.domain.ProjectRoom;
+import com.example.moreveiw.entitiy.APIMessage;
+import com.example.moreveiw.entitiy.ProjectRoom;
 import com.example.moreveiw.service.ChatService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;

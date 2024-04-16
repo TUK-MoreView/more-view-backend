@@ -1,4 +1,4 @@
-package com.example.moreveiw.domain;
+package com.example.moreveiw.entitiy;
 
 import lombok.Builder;
 import lombok.Getter;

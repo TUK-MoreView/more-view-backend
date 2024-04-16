@@ -1,9 +1,8 @@
 package com.example.moreveiw.bean;
 
-import com.example.moreveiw.domain.ProjectRoom;
+import com.example.moreveiw.entitiy.ProjectRoom;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -12,7 +11,7 @@ import java.io.IOException;
 
 @Component
 @RequiredArgsConstructor
-public class SendMessageBean {
+public class SendMessage {
     private final ObjectMapper objectMapper;
 
     // ChatRoom에 있는 모든 session에 메시지 전송

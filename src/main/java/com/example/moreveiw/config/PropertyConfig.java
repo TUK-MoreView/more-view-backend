@@ -1,4 +1,4 @@
-package com.example.moreveiw;
+package com.example.moreveiw.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -8,5 +8,5 @@ import org.springframework.context.annotation.PropertySources;
 @PropertySources({
         @PropertySource(value = "classpath:secrets.properties", ignoreResourceNotFound = true),
 })
-public class PropertySetting {
+public class PropertyConfig {
 }
