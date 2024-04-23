@@ -1,4 +1,4 @@
-package com.example.moreveiw.domain.rectangle.model.dao;
+package com.example.moreveiw.domain.shape.rectangle.model.dao;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

@@ -1,6 +1,7 @@
 package com.example.moreveiw.domain.websocket.service;
 
 import com.example.moreveiw.domain.image.service.ImageService;
+import com.example.moreveiw.domain.shape.rectangle.service.RectangleService;
 import com.example.moreveiw.domain.websocket.bean.SendMessage;
 import com.example.moreveiw.domain.text.service.TextService;
 import com.example.moreveiw.domain.websocket.entitiy.APIMessage;
@@ -51,7 +52,9 @@ public class ProjectService {
 
     private final ImageService imageService;
     private final TextService textService;
+    private final RectangleService rectangleService;
     private final SendMessage sendMessage;
+
     // MessageType에 따라 로직 실행
     public void handleMessage(ProjectRoom chatRoom, APIMessage message, WebSocketSession session) {
 
@@ -65,6 +68,9 @@ public class ProjectService {
         } else if (message.getType().equals(APIMessage.SaveType.saveText)) {
             // 텍스트 저장
             sendMessage.sendToAllMessage(chatRoom, textService.exec(message.getText()));
+        } else if (message.getType().equals(APIMessage.SaveType.saveRectangle)) {
+            // 사각형 저장
+            sendMessage.sendToAllMessage(chatRoom, rectangleService.exec(message.getRectangle()));
         }
     }
 }
