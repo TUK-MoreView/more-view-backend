@@ -10,7 +10,11 @@ import org.springframework.stereotype.Component;
 public class TextService {
     private final TextRepository textRepository;
 
-    public Text exec(Text text) {
+    public Text saveText(Text text) {
         return textRepository.save(text);
+    }
+
+    public void deleteText(Text text) {
+        textRepository.deleteById(text.getId());
     }
 }
