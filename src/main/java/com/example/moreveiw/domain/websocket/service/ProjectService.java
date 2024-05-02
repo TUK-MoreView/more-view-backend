@@ -1,6 +1,7 @@
 package com.example.moreveiw.domain.websocket.service;
 
 import com.example.moreveiw.domain.image.service.ImageService;
+import com.example.moreveiw.domain.threeD.service.ThreeDService;
 import com.example.moreveiw.domain.websocket.bean.SendMessage;
 import com.example.moreveiw.domain.text.service.TextService;
 import com.example.moreveiw.domain.websocket.entitiy.APIMessage;
@@ -52,19 +53,35 @@ public class ProjectService {
     private final ImageService imageService;
     private final TextService textService;
     private final SendMessage sendMessage;
+    private final ThreeDService threeDService;
     // MessageType에 따라 로직 실행
     public void handleMessage(ProjectRoom chatRoom, APIMessage message, WebSocketSession session) {
 
-        if(message.getType().equals(APIMessage.SaveType.enter)) {
+        if(message.getSaveType().equals(APIMessage.SaveType.enter)) {
             // 채팅방에 session추가
             chatRoom.getSessions().add(session);
             sendMessage.sendToAllMessage(chatRoom, "새로운 사용자가 입장했습니다.");
-        } else if (message.getType().equals(APIMessage.SaveType.saveImage)) {
+        } else if (message.getSaveType().equals(APIMessage.SaveType.saveImage)) {
             // 이미지 저장
-            sendMessage.sendToAllMessage(chatRoom, imageService.exec(message.getImage()));
-        } else if (message.getType().equals(APIMessage.SaveType.saveText)) {
+            sendMessage.sendToAllMessage(chatRoom, imageService.saveImage(message.getImage()));
+        } else if (message.getDeleteType().equals(APIMessage.DeleteType.deleteImage)) {
+            // 이미지 삭제
+            imageService.deleteImage(message.getImage());
+            sendMessage.sendToAllMessage(chatRoom, "이미지가 삭제되었습니다.");
+        } else if (message.getSaveType().equals(APIMessage.SaveType.saveText)) {
             // 텍스트 저장
-            sendMessage.sendToAllMessage(chatRoom, textService.exec(message.getText()));
+            sendMessage.sendToAllMessage(chatRoom, textService.saveText(message.getText()));
+        } else if (message.getDeleteType().equals(APIMessage.DeleteType.deleteText)) {
+            // 텍스트 삭제
+            textService.deleteText(message.getText());
+            sendMessage.sendToAllMessage(chatRoom, "텍스트가 삭제되었습니다.");
+        } else if (message.getSaveType().equals(APIMessage.SaveType.save3DData)) {
+            // 3D 데이터 저장
+            sendMessage.sendToAllMessage(chatRoom, threeDService.saveThreeD(message.getThreeD()));
+        } else if (message.getDeleteType().equals(APIMessage.DeleteType.delete3DData)) {
+            // 3D 데이터 삭제
+            threeDService.deleteThreeD(message.getThreeD());
+            sendMessage.sendToAllMessage(chatRoom, "3D 데이터가 삭제되었습니다.");
         }
     }
 }
