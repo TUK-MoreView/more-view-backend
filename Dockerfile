@@ -1,16 +1,5 @@
-# Dockerfile
-
-# jdk17 Image Start
-FROM openjdk:17
-
-# 인자 설정 - JAR_File
-ARG JAR_FILE=build/libs/*.jar
-
-# jar 파일 복제
+FROM eclipse-temurin:17-jdk-alpine
+VOLUME /tmp
+ARG JAR_FILE
 COPY ${JAR_FILE} app.jar
-
-# 인자 설정 부분과 jar 파일 복제 부분 합쳐서 진행해도 무방
-#COPY build/libs/*.jar app.jar
-
-# 실행 명령어
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java","-jar","/app.jar"]
