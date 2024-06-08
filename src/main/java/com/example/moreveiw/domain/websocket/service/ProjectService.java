@@ -3,6 +3,7 @@ package com.example.moreveiw.domain.websocket.service;
 import com.example.moreveiw.domain.image.service.ImageService;
 import com.example.moreveiw.domain.shape.circle.editor.CircleEditor;
 import com.example.moreveiw.domain.shape.circle.service.CircleService;
+import com.example.moreveiw.domain.shape.line.editor.LineEditor;
 import com.example.moreveiw.domain.shape.line.service.LineService;
 import com.example.moreveiw.domain.shape.rectangle.editor.RectangleEditor;
 import com.example.moreveiw.domain.shape.rectangle.service.RectangleService;
@@ -72,7 +73,11 @@ public class ProjectService {
         } else if (message.getSaveType().equals(APIMessage.SaveType.saveText)) {
             // 텍스트 저장
             sendMessage.sendToAllMessage(chatRoom, textService.register(message.getText()));
-        } else if (message.getSaveType().equals(APIMessage.SaveType.saveRectangle)) {
+        }
+
+
+        /* -------------------------------------------- Rectangle -------------------------------------------- */
+        else if (message.getSaveType().equals(APIMessage.SaveType.saveRectangle)) {
             // 사각형 저장
             sendMessage.sendToAllMessage(chatRoom, rectangleService.register(message.getRectangle()));
         } else if (message.getEditType().equals(APIMessage.EditType.editRectangle)) {
@@ -82,7 +87,11 @@ public class ProjectService {
             // 사각형 삭제
             rectangleService.deleteRectangle(message.getRectangle());
             sendMessage.sendToAllMessage(chatRoom, "사각형이 삭제되었습니다.");
-        } else if (message.getSaveType().equals(APIMessage.SaveType.saveCircle)) {
+        }
+
+
+        /* -------------------------------------------- Circle -------------------------------------------- */
+        else if (message.getSaveType().equals(APIMessage.SaveType.saveCircle)) {
             // 원 저장
             sendMessage.sendToAllMessage(chatRoom, circleService.register(message.getCircle()));
         } else if (message.getEditType().equals(APIMessage.EditType.editCircle)) {
@@ -92,9 +101,20 @@ public class ProjectService {
             // 원 삭제
             circleService.deleteCircle(message.getCircle());
             sendMessage.sendToAllMessage(chatRoom, "원이 삭제되었습니다.");
-        } else if (message.getSaveType().equals(APIMessage.SaveType.saveLine)) {
+        }
+
+
+        /* -------------------------------------------- Line -------------------------------------------- */
+        else if (message.getSaveType().equals(APIMessage.SaveType.saveLine)) {
             // 선 저장
             sendMessage.sendToAllMessage(chatRoom, lineService.register(message.getLine()));
+        } else if (message.getEditType().equals(APIMessage.EditType.editLine)) {
+            // 선 수정
+            lineService.editLine(message.getLine().getId(), LineEditor.builder().build());
+        } else if (message.getDeleteType().equals(APIMessage.DeleteType.deleteLine)) {
+            // 선 삭제
+            lineService.deleteLine(message.getLine());
+            sendMessage.sendToAllMessage(chatRoom, "선이 삭제되었습니다.");
         }
     }
 }

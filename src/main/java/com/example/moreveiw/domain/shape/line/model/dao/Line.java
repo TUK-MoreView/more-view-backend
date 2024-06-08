@@ -1,5 +1,7 @@
 package com.example.moreveiw.domain.shape.line.model.dao;
 
+import com.example.moreveiw.domain.shape.line.editor.LineEditor;
+import com.example.moreveiw.domain.shape.rectangle.editor.RectangleEditor;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,5 +28,20 @@ public class Line {
     private int strokeWidth;
 
     private String color;
+
+    public LineEditor.LineEditorBuilder toEditor() {
+        return LineEditor.builder()
+                .x(x)
+                .y(y)
+                .strokeWidth(strokeWidth)
+                .color(color);
+    }
+
+    public void edit(final LineEditor editor) {
+        this.x = editor.getX();
+        this.y = editor.getY();
+        this.strokeWidth = editor.getStrokeWidth();
+        this.color = editor.getColor();
+    }
 
 }

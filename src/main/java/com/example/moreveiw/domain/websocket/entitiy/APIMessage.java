@@ -15,11 +15,11 @@ public class APIMessage {
     }
 
     public enum EditType {
-        enter, editImage, editText, editRectangle, editCircle
+        enter, editImage, editText, editRectangle, editCircle, editLine
     }
 
     public enum DeleteType {
-        enter, deleteImage, deleteText, deleteRectangle, deleteCircle
+        enter, deleteImage, deleteText, deleteRectangle, deleteCircle, deleteLine
     }
 
 
