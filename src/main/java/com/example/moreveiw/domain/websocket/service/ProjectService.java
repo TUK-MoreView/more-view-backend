@@ -2,6 +2,7 @@ package com.example.moreveiw.domain.websocket.service;
 
 import com.example.moreveiw.domain.image.service.ImageService;
 import com.example.moreveiw.domain.shape.circle.service.CircleService;
+import com.example.moreveiw.domain.shape.line.model.service.LineService;
 import com.example.moreveiw.domain.shape.rectangle.service.RectangleService;
 import com.example.moreveiw.domain.websocket.bean.SendMessage;
 import com.example.moreveiw.domain.text.service.TextService;
@@ -50,17 +51,16 @@ public class ProjectService {
     }
 
 
-
     private final ImageService imageService;
     private final TextService textService;
     private final RectangleService rectangleService;
     private final CircleService circleService;
+    private final LineService lineService;
     private final SendMessage sendMessage;
 
     // MessageType에 따라 로직 실행
     public void handleMessage(ProjectRoom chatRoom, APIMessage message, WebSocketSession session) {
-
-        if(message.getType().equals(APIMessage.SaveType.enter)) {
+        if (message.getType().equals(APIMessage.SaveType.enter)) {
             // 채팅방에 session추가
             chatRoom.getSessions().add(session);
             sendMessage.sendToAllMessage(chatRoom, "새로운 사용자가 입장했습니다.");
@@ -73,10 +73,13 @@ public class ProjectService {
         } else if (message.getType().equals(APIMessage.SaveType.saveRectangle)) {
             // 사각형 저장
             sendMessage.sendToAllMessage(chatRoom, rectangleService.exec(message.getRectangle()));
-        }
-        else if (message.getType().equals(APIMessage.SaveType.saveCircle)) {
+        } else if (message.getType().equals(APIMessage.SaveType.saveCircle)) {
             // 원 저장
             sendMessage.sendToAllMessage(chatRoom, circleService.exec(message.getCircle()));
+        } else if (message.getType().equals(APIMessage.SaveType.saveLine)) {
+            // 선 저장
+            sendMessage.sendToAllMessage(chatRoom, lineService.exec(message.getLine()));
         }
+
     }
 }
