@@ -2,7 +2,8 @@ package com.example.moreveiw.domain.websocket.service;
 
 import com.example.moreveiw.domain.image.service.ImageService;
 import com.example.moreveiw.domain.shape.circle.service.CircleService;
-import com.example.moreveiw.domain.shape.line.model.service.LineService;
+import com.example.moreveiw.domain.shape.line.service.LineService;
+import com.example.moreveiw.domain.shape.rectangle.editor.RectangleEditor;
 import com.example.moreveiw.domain.shape.rectangle.service.RectangleService;
 import com.example.moreveiw.domain.websocket.bean.SendMessage;
 import com.example.moreveiw.domain.text.service.TextService;
@@ -60,26 +61,28 @@ public class ProjectService {
 
     // MessageType에 따라 로직 실행
     public void handleMessage(ProjectRoom chatRoom, APIMessage message, WebSocketSession session) {
-        if (message.getType().equals(APIMessage.SaveType.enter)) {
+        if (message.getSaveType().equals(APIMessage.SaveType.enter)) {
             // 채팅방에 session추가
             chatRoom.getSessions().add(session);
             sendMessage.sendToAllMessage(chatRoom, "새로운 사용자가 입장했습니다.");
-        } else if (message.getType().equals(APIMessage.SaveType.saveImage)) {
+        } else if (message.getSaveType().equals(APIMessage.SaveType.saveImage)) {
             // 이미지 저장
             sendMessage.sendToAllMessage(chatRoom, imageService.exec(message.getImage()));
-        } else if (message.getType().equals(APIMessage.SaveType.saveText)) {
+        } else if (message.getSaveType().equals(APIMessage.SaveType.saveText)) {
             // 텍스트 저장
             sendMessage.sendToAllMessage(chatRoom, textService.exec(message.getText()));
-        } else if (message.getType().equals(APIMessage.SaveType.saveRectangle)) {
+        } else if (message.getSaveType().equals(APIMessage.SaveType.saveRectangle)) {
             // 사각형 저장
             sendMessage.sendToAllMessage(chatRoom, rectangleService.exec(message.getRectangle()));
-        } else if (message.getType().equals(APIMessage.SaveType.saveCircle)) {
+        } else if (message.getEditType().equals(APIMessage.EditType.editRectangle)) {
+            // 사각형 수정
+            rectangleService.editRectangle(message.getRectangle().getId(), RectangleEditor.builder().build());
+        } else if (message.getSaveType().equals(APIMessage.SaveType.saveCircle)) {
             // 원 저장
             sendMessage.sendToAllMessage(chatRoom, circleService.exec(message.getCircle()));
-        } else if (message.getType().equals(APIMessage.SaveType.saveLine)) {
+        } else if (message.getSaveType().equals(APIMessage.SaveType.saveLine)) {
             // 선 저장
             sendMessage.sendToAllMessage(chatRoom, lineService.exec(message.getLine()));
         }
-
     }
 }

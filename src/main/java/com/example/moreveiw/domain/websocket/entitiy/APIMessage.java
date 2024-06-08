@@ -8,13 +8,24 @@ import com.example.moreveiw.domain.text.model.dao.Text;
 import lombok.Getter;
 
 @Getter
-public class  APIMessage {
+public class APIMessage {
 
     public enum SaveType {
         enter, saveImage, saveText, saveRectangle, saveCircle, saveLine
     }
 
-    private SaveType type;
+    public enum EditType {
+        enter, editImage, editText, editRectangle
+    }
+
+    public enum DeleteType {
+        enter, deleteImage, deleteText, deleteRectangle
+    }
+
+
+    private SaveType saveType;
+    private EditType editType;
+    private DeleteType deleteType;
     private String roomId;
     private String userId;
 
