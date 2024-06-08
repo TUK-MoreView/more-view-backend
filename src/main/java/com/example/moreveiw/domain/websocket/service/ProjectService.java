@@ -88,7 +88,11 @@ public class ProjectService {
         } else if (message.getEditType().equals(APIMessage.EditType.editCircle)) {
             // 원 수정
             circleService.editCircle(message.getCircle().getId(), CircleEditor.builder().build());
-        }else if (message.getSaveType().equals(APIMessage.SaveType.saveLine)) {
+        } else if (message.getDeleteType().equals(APIMessage.DeleteType.deleteCircle)) {
+            // 원 삭제
+            circleService.deleteCircle(message.getCircle());
+            sendMessage.sendToAllMessage(chatRoom, "원이 삭제되었습니다.");
+        } else if (message.getSaveType().equals(APIMessage.SaveType.saveLine)) {
             // 선 저장
             sendMessage.sendToAllMessage(chatRoom, lineService.register(message.getLine()));
         }

@@ -20,7 +20,15 @@ public class CircleService {
 
     /* -------------------------------------------- CREATE 끝 -------------------------------------------- */
 
-    
+
+    /* -------------------------------------------- DELETE -------------------------------------------- */
+    public void deleteCircle(Circle circle) {
+        circleRepository.deleteById(circle.getId());
+    }
+
+    /* -------------------------------------------- DELETE 끝 -------------------------------------------- */
+
+
     /* -------------------------------------------- EDIT -------------------------------------------- */
     @Transactional
     public Circle editCircle(final Long id, final CircleEditor editor) {

@@ -19,7 +19,7 @@ public class APIMessage {
     }
 
     public enum DeleteType {
-        enter, deleteImage, deleteText, deleteRectangle
+        enter, deleteImage, deleteText, deleteRectangle, deleteCircle
     }
 
 
