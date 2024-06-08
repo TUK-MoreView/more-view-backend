@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 public class ImageService {
     private final ImageRepository imageRepository;
 
-    public Image exec(Image image) {
+    public Image register(Image image) {
         return imageRepository.save(image);
     }
 }

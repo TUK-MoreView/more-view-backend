@@ -11,7 +11,7 @@ public class CircleService {
 
     private final CircleRepository circleRepository;
 
-    public Circle exec(Circle circle) {
+    public Circle register(Circle circle) {
         return circleRepository.save(circle);
     }
 }

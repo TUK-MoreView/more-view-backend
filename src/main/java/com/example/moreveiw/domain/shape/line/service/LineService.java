@@ -11,7 +11,7 @@ public class LineService {
 
     private final LineRepository lineRepository;
 
-    public Line exec(Line line) {
+    public Line register(Line line) {
         return lineRepository.save(line);
     }
 

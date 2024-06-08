@@ -13,16 +13,23 @@ public class RectangleService {
 
     private final RectangleRepository rectangleRepository;
 
-    public Rectangle exec(Rectangle rectangle) {
+    /* -------------------------------------------- CREATE -------------------------------------------- */
+    public Rectangle register(Rectangle rectangle) {
         return rectangleRepository.save(rectangle);
     }
 
+    /* -------------------------------------------- CREATE 끝 -------------------------------------------- */
+
+
+    /* -------------------------------------------- DELETE -------------------------------------------- */
     public void deleteRectangle(Rectangle rectangle) {
         rectangleRepository.deleteById(rectangle.getId());
     }
 
-    /* -------------------------------------------- EDIT -------------------------------------------- */
+    /* -------------------------------------------- DELETE 끝 -------------------------------------------- */
 
+
+    /* -------------------------------------------- EDIT -------------------------------------------- */
     @Transactional
     public Rectangle editRectangle(final Long id, final RectangleEditor editor) {
 
