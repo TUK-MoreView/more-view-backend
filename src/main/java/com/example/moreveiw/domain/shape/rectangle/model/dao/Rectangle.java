@@ -20,8 +20,8 @@ public class Rectangle {
 
     private Long projectId;
 
-    private String x;
-    private String y;
+    private double x;
+    private double y;
 
     private float width;
     private float height;

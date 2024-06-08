@@ -20,8 +20,8 @@ public class Circle {
 
     private Long projectId;
 
-    private String x;
-    private String y;
+    private double x;
+    private double y;
 
     private Long radiusX;
     private Long radiusY;
