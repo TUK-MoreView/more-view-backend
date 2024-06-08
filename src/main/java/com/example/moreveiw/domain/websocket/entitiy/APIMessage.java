@@ -15,7 +15,7 @@ public class APIMessage {
     }
 
     public enum EditType {
-        enter, editImage, editText, editRectangle
+        enter, editImage, editText, editRectangle, editCircle
     }
 
     public enum DeleteType {

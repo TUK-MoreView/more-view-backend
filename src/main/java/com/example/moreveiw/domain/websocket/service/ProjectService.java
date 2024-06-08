@@ -1,6 +1,7 @@
 package com.example.moreveiw.domain.websocket.service;
 
 import com.example.moreveiw.domain.image.service.ImageService;
+import com.example.moreveiw.domain.shape.circle.editor.CircleEditor;
 import com.example.moreveiw.domain.shape.circle.service.CircleService;
 import com.example.moreveiw.domain.shape.line.service.LineService;
 import com.example.moreveiw.domain.shape.rectangle.editor.RectangleEditor;
@@ -84,7 +85,10 @@ public class ProjectService {
         } else if (message.getSaveType().equals(APIMessage.SaveType.saveCircle)) {
             // 원 저장
             sendMessage.sendToAllMessage(chatRoom, circleService.register(message.getCircle()));
-        } else if (message.getSaveType().equals(APIMessage.SaveType.saveLine)) {
+        } else if (message.getEditType().equals(APIMessage.EditType.editCircle)) {
+            // 원 수정
+            circleService.editCircle(message.getCircle().getId(), CircleEditor.builder().build());
+        }else if (message.getSaveType().equals(APIMessage.SaveType.saveLine)) {
             // 선 저장
             sendMessage.sendToAllMessage(chatRoom, lineService.register(message.getLine()));
         }
