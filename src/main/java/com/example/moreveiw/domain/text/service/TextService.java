@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 public class TextService {
     private final TextRepository textRepository;
 
-    public Text exec(Text text) {
+    public Text register(Text text) {
         return textRepository.save(text);
     }
 }
