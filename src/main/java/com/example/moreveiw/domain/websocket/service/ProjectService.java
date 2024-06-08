@@ -67,22 +67,26 @@ public class ProjectService {
             sendMessage.sendToAllMessage(chatRoom, "새로운 사용자가 입장했습니다.");
         } else if (message.getSaveType().equals(APIMessage.SaveType.saveImage)) {
             // 이미지 저장
-            sendMessage.sendToAllMessage(chatRoom, imageService.exec(message.getImage()));
+            sendMessage.sendToAllMessage(chatRoom, imageService.register(message.getImage()));
         } else if (message.getSaveType().equals(APIMessage.SaveType.saveText)) {
             // 텍스트 저장
-            sendMessage.sendToAllMessage(chatRoom, textService.exec(message.getText()));
+            sendMessage.sendToAllMessage(chatRoom, textService.register(message.getText()));
         } else if (message.getSaveType().equals(APIMessage.SaveType.saveRectangle)) {
             // 사각형 저장
-            sendMessage.sendToAllMessage(chatRoom, rectangleService.exec(message.getRectangle()));
+            sendMessage.sendToAllMessage(chatRoom, rectangleService.register(message.getRectangle()));
         } else if (message.getEditType().equals(APIMessage.EditType.editRectangle)) {
             // 사각형 수정
             rectangleService.editRectangle(message.getRectangle().getId(), RectangleEditor.builder().build());
+        } else if (message.getDeleteType().equals(APIMessage.DeleteType.deleteRectangle)) {
+            // 사각형 삭제
+            rectangleService.deleteRectangle(message.getRectangle());
+            sendMessage.sendToAllMessage(chatRoom, "사각형이 삭제되었습니다.");
         } else if (message.getSaveType().equals(APIMessage.SaveType.saveCircle)) {
             // 원 저장
-            sendMessage.sendToAllMessage(chatRoom, circleService.exec(message.getCircle()));
+            sendMessage.sendToAllMessage(chatRoom, circleService.register(message.getCircle()));
         } else if (message.getSaveType().equals(APIMessage.SaveType.saveLine)) {
             // 선 저장
-            sendMessage.sendToAllMessage(chatRoom, lineService.exec(message.getLine()));
+            sendMessage.sendToAllMessage(chatRoom, lineService.register(message.getLine()));
         }
     }
 }
