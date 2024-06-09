@@ -2,7 +2,7 @@ name: AWS ECR push & deploy k8s
 
 on:
   push:
-    branches: [ main ]
+    branches: [ Cicd/2-add-script-file ]
 
 jobs:
   build:
