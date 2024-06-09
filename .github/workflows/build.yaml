@@ -32,7 +32,7 @@ jobs:
         id: build-image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: demo-moreview-backend
+          ECR_REPOSITORY: demo-frontend
           IMAGE_TAG: ${{ github.run_number }}
         run: |
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
@@ -54,20 +54,19 @@ jobs:
           token: ${{ secrets.ACTION_TOKEN }}
           path: k8s-manifest-repo # 최상위 경로로 repository와 동일하게 설정
 
-      # 새 이미지 버전으로 파일 수정
       - name: Update Kubernetes resources
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: demo-moreview-backend
-          IMAGE_TAG: ${{ github.run_number }}
         run: |
-          cd k8s-manifest-repo
-          sed -i "s|image:.*|image: $ECR_REGISTRY\/$ECR_REPOSITORY:$IMAGE_TAG|g" back-admin-deploy.yaml # 새로 생성된 이미지로 교체하는 명령
-          
+          echo ${{ steps.login-ecr.outputs.registry }}
+          echo ${{ steps.image-info.outputs.ecr_repository }}
+          echo ${{ steps.image-info.outputs.image_tag }}
+          cd k8s-manifest-repo/overlays/dev/
+          kustomize edit set image ${{ steps.login-ecr.outputs.registry}}/${{ steps.image-info.outputs.ecr_repository }}=${{ steps.login-ecr.outputs.registry}}/${{ steps.image-info.outputs.ecr_repository }}:${{ steps.image-info.outputs.image_tag }}
+          cat kustomization.yaml
+
       # 수정된 파일 commit & push
       - name: Commit files
         env:
-          ECR_REPOSITORY: demo-moreview-backend
+          ECR_REPOSITORY: demo-frontend
           IMAGE_TAG: ${{ github.run_number }}
         run: |
           cd k8s-manifest-repo
