@@ -14,11 +14,6 @@ jobs:
       - name: Check Node v
         run: node -v
 
-      - name: AWS ECR push & deploy k8s
-        run: |
-          npm install
-          npm run build
-
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
