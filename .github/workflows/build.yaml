@@ -2,44 +2,77 @@ name: AWS ECR push & deploy k8s
 
 on:
   push:
-    branches: [ Cicd/2-add-script-file ]
+    branches: [main]
+
+name: AWS ECR push & deploy k8s
 
 jobs:
-  build:
+  deploy:
+    name: Deploy
     runs-on: ubuntu-latest
+    environment: production
+
     steps:
-      - name: Checkout source code
+      # Github에 저장된 코드를 CI 서버로 내려받아 뒷 step에서 사용할 수 있도록 하는 과정
+      - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Check Node v
-        run: node -v
-
+      # Github Secret과 local env 에 저장된 값 불러오기
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: \${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}   # secret에 저장되어 있는 값 불러오기
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-northeast-2
 
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
-      - name: Get image tag(verion)
-        id: image
-        run: |
-          VERSION=\$(echo \${{ github.sha }} | cut -c1-8)
-          echo VERSION=\$VERSION
-          echo "::set-output name=version::\$VERSION"
-
-      - name: Build, tag, and push image to Amazon ECR
-        id: image-info
+      - name: Build, tag, and push the image to Amazon ECR
+        id: build-image
         env:
-          ECR_REGISTRY: \${{ steps.login-ecr.outputs.registry }}
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: demo-moreview-backend
-          IMAGE_TAG: \${{ steps.image.outputs.version }}
+          IMAGE_TAG: ${{ github.run_number }}
         run: |
-          echo "::set-output name=ecr_repository::\$ECR_REPOSITORY"
-          echo "::set-output name=image_tag::\$IMAGE_TAG"
-          docker build -t \$ECR_REGISTRY/\$ECR_REPOSITORY:\$IMAGE_TAG .
-          docker push \$ECR_REGISTRY/\$ECR_REPOSITORY:\$IMAGE_TAG
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          echo "Pushing image to ECR..."
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+      
+      # kustomize 명령을 가져온다.
+      - name: Setup Kustomize
+        uses: imranismail/setup-kustomize@v1
+
+      - name: Checkout kustomize repository
+        uses: actions/checkout@v2
+        with:
+          # kubernetes 설정정보 저장소
+          repository: TUK-MoreView/k8s-manifest-repo # k8s yaml 파일이 있는 repo
+          ref: main # branch 이름
+          # 다른 저장소에 push 하려면 Personal Access Token이 필요.
+          token: ${{ secrets.ACTION_TOKEN }}
+          path: k8s-manifest-repo # 최상위 경로로 repository와 동일하게 설정
+
+      # 새 이미지 버전으로 파일 수정
+      - name: Update Kubernetes resources
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: demo-moreview-backend
+          IMAGE_TAG: ${{ github.run_number }}
+        run: |
+          cd k8s-manifest-repo
+          sed -i "s|image:.*|image: $ECR_REGISTRY\/$ECR_REPOSITORY:$IMAGE_TAG|g" back-admin-deploy.yaml # 새로 생성된 이미지로 교체하는 명령
+          
+      # 수정된 파일 commit & push
+      - name: Commit files
+        env:
+          ECR_REPOSITORY: demo-moreview-backend
+          IMAGE_TAG: ${{ github.run_number }}
+        run: |
+          cd k8s-manifest-repo
+          git config --global user.email "6813821@tukorea.ac.kr"
+          git config --global user.name "why-only-english"
+          git commit -am "Update image $ECR_REPOSITORY tag $IMAGE_TAG"
+          git push -u origin main
