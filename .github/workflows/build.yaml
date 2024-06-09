@@ -4,7 +4,6 @@ on:
   push:
     branches: [ Cicd/2-add-script-file ]
     
-    
 jobs:
   deploy:
     name: Deploy
