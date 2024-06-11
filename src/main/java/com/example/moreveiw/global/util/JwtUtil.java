@@ -16,8 +16,7 @@ public class JwtUtil {
 
     public JwtUtil(@Value("${jwt.secret_key}") String secret) {
 
-
-        secretKey = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), Jwts.SIG.HS256.key().build().getAlgorithm());
+        this.secretKey = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), Jwts.SIG.HS256.key().build().getAlgorithm());
     }
 
     public String getMemberName(String token) {

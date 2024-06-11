@@ -3,7 +3,6 @@ package com.example.moreveiw.global.config;
 import com.example.moreveiw.global.security.jwt.JwtFilter;
 import com.example.moreveiw.global.security.jwt.LoginFilter;
 import com.example.moreveiw.global.util.JwtUtil;
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
