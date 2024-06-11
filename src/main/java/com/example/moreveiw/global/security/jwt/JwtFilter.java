@@ -1,11 +1,11 @@
 package com.example.moreveiw.global.security.jwt;
 
-import com.example.moreveiw.global.security.oauth2.dto.CustomOAuth2User;
-import com.example.moreveiw.global.security.oauth2.dto.MemberDto;
+import com.example.moreveiw.domain.member.editor.MemberEditor;
+import com.example.moreveiw.domain.member.model.dao.Member;
+import com.example.moreveiw.domain.member.model.dto.CustomUserDetails;
 import com.example.moreveiw.global.util.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
@@ -26,70 +26,47 @@ public class JwtFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        String requestUri = request.getRequestURI();
+        //request에서 Authorization 헤더를 찾음
+        String authorization= request.getHeader("Authorization");
 
-        if (requestUri.matches("^\\/login(?:\\/.*)?$")) {
-
-            filterChain.doFilter(request, response);
-            return;
-        }
-        if (requestUri.matches("^\\/oauth2(?:\\/.*)?$")) {
-
-            filterChain.doFilter(request, response);
-            return;
-        }
-
-        // cookie들을 불러온 뒤 Authorization Key에 담긴 쿠키를 찾음
-        String authorization = null;
-        Cookie[] cookies = request.getCookies();
-        for (Cookie cookie : cookies) {
-
-            System.out.println(cookie.getName());
-            if (cookie.getName().equals("Authorization")) {
-
-                authorization = cookie.getValue();
-            }
-        }
-
-        // Authorization 헤더 검증
-        if (authorization == null) {
+        //Authorization 헤더 검증
+        if (authorization == null || !authorization.startsWith("Bearer ")) {
 
             System.out.println("token null");
             filterChain.doFilter(request, response);
 
-            // 조건이 해당되면 메소드 종료 (필수)
+            //조건이 해당되면 메소드 종료 (필수)
             return;
         }
 
-        // 토큰
-        String token = authorization;
+        String token = authorization.split(" ")[1];
 
-        // 토큰 소멸 시간 검증
+        //토큰 소멸 시간 검증
         if (jwtUtil.isExpired(token)) {
 
             System.out.println("token expired");
             filterChain.doFilter(request, response);
 
-            // 조건이 해당되면 메소드 종료 (필수)
+            //조건이 해당되면 메소드 종료 (필수)
             return;
         }
 
-        // 토큰에서 memberName과 role 획득
+
         String memberName = jwtUtil.getMemberName(token);
         String role = jwtUtil.getRole(token);
 
-        // memberDt를 생성하여 값 수정
-        MemberDto memberDto = MemberDto.builder()
+        // MemberEditorBuilder를 사용하여 MemberEditor 객체 생성
+        MemberEditor memberEditor = MemberEditor.builder()
                 .memberName(memberName)
+                .password("temppassword")
                 .role(role)
                 .build();
 
-        // UserDetails에 회원 정보 객체 담기
-        CustomOAuth2User customOAuth2User = new CustomOAuth2User(memberDto);
 
-        // 스프링 시큐리티 인증 토큰 생성
-        Authentication authToken = new UsernamePasswordAuthenticationToken(customOAuth2User, null, customOAuth2User.getAuthorities());
-        // 세션에 사용자 등록
+        CustomUserDetails customUserDetails = new CustomUserDetails(Member.builder().build());
+
+        Authentication authToken = new UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.getAuthorities());
+
         SecurityContextHolder.getContext().setAuthentication(authToken);
 
         filterChain.doFilter(request, response);
