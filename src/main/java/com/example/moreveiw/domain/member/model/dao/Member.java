@@ -21,8 +21,7 @@ public class Member extends BaseEntity {
     private Long id;
 
     private String memberName;
-
-    private String name;
+    private String password;
 
     @Email
     private String email;
@@ -31,8 +30,8 @@ public class Member extends BaseEntity {
 
     public MemberEditor.MemberEditorBuilder toEditor() {
         return MemberEditor.builder()
-                .name(name)
-                .email(email);
+                .memberName(memberName)
+                .password(password);
     }
 
 }
