@@ -25,3 +25,17 @@ jpa:
     properties:
         hibernate:
             dialect: org.hibernate.dialect.MySQL8Dialect
+
+
+# s3 설정
+cloud:
+    aws:
+        credentials:
+            accessKey: ${AWS_ACCESS_KEY}
+            secretKey: ${AWS_SECRET_KEY}
+        region:
+            static: us-east-1
+        stack:
+            auto: false
+        s3:
+            bucket: moreview
