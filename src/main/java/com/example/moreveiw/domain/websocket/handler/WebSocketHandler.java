@@ -15,7 +15,6 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-@Primary
 public class WebSocketHandler extends TextWebSocketHandler {
 
     private final ProjectService chatService;
