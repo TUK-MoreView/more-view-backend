@@ -1,78 +1,74 @@
 package com.example.moreveiw.global.config;
 
-import com.example.moreveiw.global.security.jwt.JwtFilter;
-import com.example.moreveiw.global.security.jwt.LoginFilter;
-import com.example.moreveiw.global.util.JwtUtil;
+import com.example.moreveiw.global.security.jwt.JwtAccessDeniedHandler;
+import com.example.moreveiw.global.security.jwt.JwtAuthenticationEntryPoint;
+import com.example.moreveiw.global.security.jwt.JwtSecurityConfig;
+import com.example.moreveiw.global.security.jwt.TokenProvider;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.filter.CorsFilter;
 
-@Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
+@Configuration
 public class SecurityConfig {
 
-    private final AuthenticationConfiguration authenticationConfiguration;
-    private final JwtUtil jwtUtil;
+    private final TokenProvider tokenProvider;
+    private final CorsFilter corsFilter;
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
 
-    public SecurityConfig(AuthenticationConfiguration authenticationConfiguration, JwtUtil jwtUtil) {
-
-        this.authenticationConfiguration = authenticationConfiguration;
-        this.jwtUtil = jwtUtil;
+    public SecurityConfig(TokenProvider tokenProvider,
+                          CorsFilter corsFilter,
+                          JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
+                          JwtAccessDeniedHandler jwtAccessDeniedHandler) {
+        this.tokenProvider = tokenProvider;
+        this.corsFilter = corsFilter;
+        this.jwtAccessDeniedHandler = jwtAccessDeniedHandler;
+        this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
-
-        return configuration.getAuthenticationManager();
-    }
-
-    @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-
-        //csrf disable
         http
-                .csrf((auth) -> auth.disable());
+                .csrf(AbstractHttpConfigurer::disable)
 
-        //From 로그인 방식 disable
-        http
-                .formLogin((auth) -> auth.disable());
+                .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling(exceptionHandling -> exceptionHandling
+                        .accessDeniedHandler(jwtAccessDeniedHandler)
+                        .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                )
 
-        //http basic 인증 방식 disable
-        http
-                .httpBasic((auth) -> auth.disable());
+                .authorizeHttpRequests(authorizeHttpRequest -> authorizeHttpRequest
+                        .requestMatchers("/api/sign-in", "api/login").permitAll()
+                        .requestMatchers(PathRequest.toH2Console()).permitAll()
+                        .anyRequest().authenticated()
+                )
 
+                .sessionManagement(sessionManagement -> sessionManagement
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
-        http
-                .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/login", "/", "/join").permitAll()
-                        .requestMatchers("/admin").hasRole("ADMIN")
-                        .anyRequest().authenticated());
+                .headers(headers ->
+                        headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
+                )
 
-        http
-                .addFilterBefore(new JwtFilter(jwtUtil), LoginFilter.class);
-        http
-                .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), UsernamePasswordAuthenticationFilter.class);
-
-        //세션 설정
-        http
-                .sessionManagement((session) -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-
+                .with(new JwtSecurityConfig(tokenProvider), customizer -> {});
         return http.build();
     }
-
-
 }

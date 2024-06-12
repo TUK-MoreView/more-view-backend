@@ -23,48 +23,50 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation('commons-io:commons-io:2.11.0')
+
     compileOnly 'org.projectlombok:lombok'
-    annotationProcessor 'org.projectlombok:lombok'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
     runtimeOnly 'com.mysql:mysql-connector-j'
-    implementation 'org.springframework.boot:spring-boot-starter-websocket'
 
-
-    //websocket
+    // websocket
     implementation 'org.webjars:sockjs-client'
     implementation 'org.webjars:sockjs-client:1.5.1'
     implementation 'org.webjars:stomp-websocket:2.3.3'
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
 
-    //mariaDB
-    runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+    // mariaDB
+     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
 
     // Gradle
-    implementation 'javax.persistence:javax.persistence-api:2.2'
+     implementation 'javax.persistence:javax.persistence-api:2.2'
 
     // Swagger
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0'
 
     // Spring Security
-    implementation 'org.springframework.boot:spring-boot-starter-security'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
-    implementation 'org.springframework.security:spring-security-config:6.3.0'
-    implementation 'org.springframework.security:spring-security-web:6.3.0'
-    implementation 'org.springframework.security:spring-security-oauth2-client'
 
     // oauth
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 
     // jwt
-    implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
-    implementation 'io.jsonwebtoken:jjwt-impl:0.12.3'
-    implementation 'io.jsonwebtoken:jjwt-jackson:0.12.3'
+    implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
+    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.5'
+    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.5'
 
     // Annotation Processor
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+    annotationProcessor 'org.projectlombok:lombok'
 
-    //validation
+    // validation
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 }
 
