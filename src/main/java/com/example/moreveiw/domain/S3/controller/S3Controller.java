@@ -15,13 +15,13 @@ import java.io.IOException;
 public class S3Controller {
     private final S3Service imageService;
 
-    @PostMapping(value = "/Image",
+    @PostMapping(value = "/file",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public S3UrlResponse uploadImage(@RequestBody MultipartFile file) throws IOException {
         return imageService.uploadImage(file);
     }
 
-    @DeleteMapping("/Image")
+    @DeleteMapping("/file")
     public boolean deleteImage(@RequestParam String fileUrl) {
         return imageService.deleteImage(fileUrl);
     }
