@@ -2,7 +2,7 @@ name: AWS ECR push & deploy k8s
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ main ]
     
 jobs:
   deploy:
@@ -32,12 +32,12 @@ jobs:
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: demo-frontend
-          IMAGE_TAG: ${{ github.run_number }}
+          IMAGE_TAG: ${{ steps.image.outputs.version }}
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-          docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          echo "Pushing image to ECR..."
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          echo "::set-output name=ecr_repository::\$ECR_REPOSITORY"
+          echo "::set-output name=image_tag::\$IMAGE_TAG"
+          docker build -t \$ECR_REGISTRY/\$ECR_REPOSITORY:\$IMAGE_TAG .
+          docker push \$ECR_REGISTRY/\$ECR_REPOSITORY:\$IMAGE_TAG
       
       # kustomize 명령을 가져온다.
       - name: Setup Kustomize
@@ -66,7 +66,7 @@ jobs:
       - name: Commit files
         run: |
           cd k8s-manifest-repo
-          git config --global user.email "github-actions@github.com"
-          git config --global user.name "github-actions"
+          git config --global user.email "6813821@tukorea.co.kr"
+          git config --global user.name "why-only-english"
           git commit -am "Update image tag"
           git push -u origin main
