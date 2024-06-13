@@ -71,9 +71,5 @@ jobs:
           cd k8s-manifest-repo
           git config --global user.email "6813821@tukorea.ac.kr"
           git config --global user.name "why-only-english"
-          if [ -n "$(git status --porcelain)" ]; then
-            git commit -am "Update image $ECR_REPOSITORY tag $IMAGE_TAG"
-            git push -u origin main
-          else
-            echo "No changes to commit"
-          fi
+          git commit -am "Update image $ECR_REPOSITORY tag $IMAGE_TAG"
+          git push -u origin main
