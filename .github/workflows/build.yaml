@@ -34,10 +34,10 @@ jobs:
           ECR_REPOSITORY: demo-frontend
           IMAGE_TAG: ${{ steps.image.outputs.version }}
         run: |
-          echo "::set-output name=ecr_repository::\$ECR_REPOSITORY"
-          echo "::set-output name=image_tag::\$IMAGE_TAG"
-          docker build -t \$ECR_REGISTRY/\$ECR_REPOSITORY:\$IMAGE_TAG .
-          docker push \$ECR_REGISTRY/\$ECR_REPOSITORY:\$IMAGE_TAG
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          echo "Pushing image to ECR..."
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
       
       # kustomize 명령을 가져온다.
       - name: Setup Kustomize
