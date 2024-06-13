@@ -2,7 +2,7 @@ name: AWS ECR push & deploy k8s
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ Feat/3-login-jwt ]
     
 jobs:
   deploy:
