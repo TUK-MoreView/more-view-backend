@@ -64,12 +64,9 @@ jobs:
 
       # 수정된 파일 commit & push
       - name: Commit files
-        env:
-          ECR_REPOSITORY: demo-frontend
-          IMAGE_TAG: ${{ github.run_number }}
         run: |
           cd k8s-manifest-repo
-          git config --global user.email "6813821@tukorea.ac.kr"
-          git config --global user.name "why-only-english"
-          git commit -am "Update image $ECR_REPOSITORY tag $IMAGE_TAG"
+          git config --global user.email "github-actions@github.com"
+          git config --global user.name "github-actions"
+          git commit -am "Update image tag"
           git push -u origin main
