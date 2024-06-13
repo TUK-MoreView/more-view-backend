@@ -8,36 +8,45 @@ import org.springframework.util.StringUtils;
 @RequiredArgsConstructor
 public class MemberEditor {
 
-    private final String name;
-    private final String email;
+    private final String memberName;
+    private final String password;
+    private final String role;
 
     public static MemberEditorBuilder builder() {
         return new MemberEditorBuilder();
     }
 
     public static class MemberEditorBuilder {
-        private String name;
-        private String email;
+        private String memberName;
+        private String password;
+        private String role;
 
         MemberEditorBuilder() {
         }
 
-        public MemberEditorBuilder name(final String name) {
-            if (StringUtils.hasText(name)) {
-                this.name = name;
+        public MemberEditorBuilder memberName(final String memberName) {
+            if (StringUtils.hasText(memberName)) {
+                this.memberName = memberName;
             }
             return this;
         }
 
-        public MemberEditorBuilder email(final String email) {
-            if (StringUtils.hasText(email)) {
-                this.email = email;
+        public MemberEditorBuilder password(final String password) {
+            if (StringUtils.hasText(password)) {
+                this.password = password;
+            }
+            return this;
+        }
+
+        public MemberEditorBuilder role(final String role) {
+            if (StringUtils.hasText(role)) {
+                this.role = role;
             }
             return this;
         }
 
         public MemberEditor build() {
-            return new MemberEditor(name, email);
+            return new MemberEditor(memberName, password, role);
         }
     }
 }

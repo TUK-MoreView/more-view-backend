@@ -1,97 +1,54 @@
 package com.example.moreveiw.global.security.jwt;
 
-import com.example.moreveiw.global.security.oauth2.dto.CustomOAuth2User;
-import com.example.moreveiw.global.security.oauth2.dto.MemberDto;
-import com.example.moreveiw.global.util.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.util.StringUtils;
+import org.springframework.web.filter.GenericFilterBean;
 
 import java.io.IOException;
 
-@Builder
-@AllArgsConstructor
-public class JwtFilter extends OncePerRequestFilter {
+@RequiredArgsConstructor
+public class JwtFilter extends GenericFilterBean {
 
-    private final JwtUtil jwtUtil;
+    private static final Logger logger = LoggerFactory.getLogger(JwtFilter.class);
+    public static final String AUTHORIZATION_HEADER = "Authorization";
+    private TokenProvider tokenProvider;
+
+    public JwtFilter(TokenProvider tokenProvider) {
+        this.tokenProvider = tokenProvider;
+    }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+        String jwt = resolveToken(httpServletRequest);
+        String requestURI = httpServletRequest.getRequestURI();
 
-        String requestUri = request.getRequestURI();
-
-        if (requestUri.matches("^\\/login(?:\\/.*)?$")) {
-
-            filterChain.doFilter(request, response);
-            return;
-        }
-        if (requestUri.matches("^\\/oauth2(?:\\/.*)?$")) {
-
-            filterChain.doFilter(request, response);
-            return;
+        if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
+            Authentication authentication = tokenProvider.getAuthentication(jwt);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            logger.debug("Security Context에 '{}' 인증정보를 저장했습니다, uri: {}", authentication.getName(), requestURI);
+        } else {
+            logger.debug("유효한 JWT 토큰이 없습니다.");
         }
 
-        // cookie들을 불러온 뒤 Authorization Key에 담긴 쿠키를 찾음
-        String authorization = null;
-        Cookie[] cookies = request.getCookies();
-        for (Cookie cookie : cookies) {
+        chain.doFilter(request, response);
+    }
 
-            System.out.println(cookie.getName());
-            if (cookie.getName().equals("Authorization")) {
+    private String resolveToken(HttpServletRequest httpServletRequest) {
+        String bearerToken = httpServletRequest.getHeader(AUTHORIZATION_HEADER);
 
-                authorization = cookie.getValue();
-            }
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(7);
         }
-
-        // Authorization 헤더 검증
-        if (authorization == null) {
-
-            System.out.println("token null");
-            filterChain.doFilter(request, response);
-
-            // 조건이 해당되면 메소드 종료 (필수)
-            return;
-        }
-
-        // 토큰
-        String token = authorization;
-
-        // 토큰 소멸 시간 검증
-        if (jwtUtil.isExpired(token)) {
-
-            System.out.println("token expired");
-            filterChain.doFilter(request, response);
-
-            // 조건이 해당되면 메소드 종료 (필수)
-            return;
-        }
-
-        // 토큰에서 memberName과 role 획득
-        String memberName = jwtUtil.getMemberName(token);
-        String role = jwtUtil.getRole(token);
-
-        // memberDt를 생성하여 값 수정
-        MemberDto memberDto = MemberDto.builder()
-                .memberName(memberName)
-                .role(role)
-                .build();
-
-        // UserDetails에 회원 정보 객체 담기
-        CustomOAuth2User customOAuth2User = new CustomOAuth2User(memberDto);
-
-        // 스프링 시큐리티 인증 토큰 생성
-        Authentication authToken = new UsernamePasswordAuthenticationToken(customOAuth2User, null, customOAuth2User.getAuthorities());
-        // 세션에 사용자 등록
-        SecurityContextHolder.getContext().setAuthentication(authToken);
-
-        filterChain.doFilter(request, response);
+        return null;
     }
 }
