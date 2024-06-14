@@ -4,6 +4,7 @@ import com.example.moreveiw.domain.image.model.dao.Image;
 import com.example.moreveiw.domain.shape.circle.model.dao.Circle;
 import com.example.moreveiw.domain.shape.line.model.dao.Line;
 import com.example.moreveiw.domain.shape.rectangle.model.dao.Rectangle;
+import com.example.moreveiw.domain.threeD.model.dao.ThreeD;
 import com.example.moreveiw.domain.text.model.dao.Text;
 import lombok.Getter;
 
@@ -11,7 +12,7 @@ import lombok.Getter;
 public class APIMessage {
 
     public enum SaveType {
-        enter, saveImage, saveText, saveRectangle, saveCircle, saveLine
+        enter, saveImage, saveText, saveRectangle, saveCircle, saveLine, save3DData
     }
 
     public enum EditType {
@@ -19,7 +20,8 @@ public class APIMessage {
     }
 
     public enum DeleteType {
-        enter, deleteImage, deleteText, deleteRectangle, deleteCircle, deleteLine
+        enter, deleteImage, deleteText, deleteRectangle, deleteCircle, deleteLine, delete3DData
+
     }
 
 
@@ -34,4 +36,5 @@ public class APIMessage {
     private Rectangle rectangle;
     private Circle circle;
     private Line line;
+    private ThreeD threeD;
 }
