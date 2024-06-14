@@ -10,7 +10,11 @@ import org.springframework.stereotype.Component;
 public class ImageService {
     private final ImageRepository imageRepository;
 
-    public Image register(Image image) {
+    public Image saveImage(Image image) {
         return imageRepository.save(image);
+    }
+
+    public void deleteImage(Image image) {
+        imageRepository.deleteById(image.getId());
     }
 }
