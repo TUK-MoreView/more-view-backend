@@ -41,7 +41,6 @@ public class ThreeDAIService {
 
         // Upload to S3
         String dataUrl = s3Service.uploadImage(multipartFile).getImageUrl();
-
         // Save to DB
         threeDAIRepository.save(ThreeDAI.builder()
                 .name(name)
