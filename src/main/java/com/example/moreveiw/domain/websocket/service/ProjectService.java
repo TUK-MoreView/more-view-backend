@@ -129,7 +129,7 @@ public class ProjectService {
         /* -------------------------------------------- Text -------------------------------------------- */
         else if (message.getSaveType().equals(APIMessage.SaveType.saveText)) {
             // 텍스트 저장
-            sendMessage.sendToAllMessage(chatRoom, textService.register(message.getText()));
+            sendMessage.sendToAllMessage(chatRoom, textService.saveText(message.getText()));
         } else if (message.getDeleteType().equals(APIMessage.DeleteType.deleteText)) {
             // 텍스트 삭제
             textService.deleteText(message.getText());
