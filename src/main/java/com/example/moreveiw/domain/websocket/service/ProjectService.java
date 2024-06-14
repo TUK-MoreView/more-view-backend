@@ -7,6 +7,7 @@ import com.example.moreveiw.domain.shape.line.editor.LineEditor;
 import com.example.moreveiw.domain.shape.line.service.LineService;
 import com.example.moreveiw.domain.shape.rectangle.editor.RectangleEditor;
 import com.example.moreveiw.domain.shape.rectangle.service.RectangleService;
+import com.example.moreveiw.domain.threeD.service.ThreeDService;
 import com.example.moreveiw.domain.websocket.bean.SendMessage;
 import com.example.moreveiw.domain.text.service.TextService;
 import com.example.moreveiw.domain.websocket.entitiy.APIMessage;
@@ -60,6 +61,8 @@ public class ProjectService {
     private final CircleService circleService;
     private final LineService lineService;
     private final SendMessage sendMessage;
+    private final ThreeDService threeDService;
+
 
     // MessageType에 따라 로직 실행
     public void handleMessage(ProjectRoom chatRoom, APIMessage message, WebSocketSession session) {
@@ -67,12 +70,6 @@ public class ProjectService {
             // 채팅방에 session추가
             chatRoom.getSessions().add(session);
             sendMessage.sendToAllMessage(chatRoom, "새로운 사용자가 입장했습니다.");
-        } else if (message.getSaveType().equals(APIMessage.SaveType.saveImage)) {
-            // 이미지 저장
-            sendMessage.sendToAllMessage(chatRoom, imageService.register(message.getImage()));
-        } else if (message.getSaveType().equals(APIMessage.SaveType.saveText)) {
-            // 텍스트 저장
-            sendMessage.sendToAllMessage(chatRoom, textService.register(message.getText()));
         }
 
 
@@ -115,6 +112,39 @@ public class ProjectService {
             // 선 삭제
             lineService.deleteLine(message.getLine());
             sendMessage.sendToAllMessage(chatRoom, "선이 삭제되었습니다.");
+        }
+
+
+        /* -------------------------------------------- image -------------------------------------------- */
+        else if (message.getSaveType().equals(APIMessage.SaveType.saveImage)) {
+            // 이미지 저장
+            sendMessage.sendToAllMessage(chatRoom, imageService.saveImage(message.getImage()));
+        } else if (message.getDeleteType().equals(APIMessage.DeleteType.deleteImage)) {
+            // 이미지 삭제
+            imageService.deleteImage(message.getImage());
+            sendMessage.sendToAllMessage(chatRoom, "이미지가 삭제되었습니다.");
+        }
+
+
+        /* -------------------------------------------- Text -------------------------------------------- */
+        else if (message.getSaveType().equals(APIMessage.SaveType.saveText)) {
+            // 텍스트 저장
+            sendMessage.sendToAllMessage(chatRoom, textService.register(message.getText()));
+        } else if (message.getDeleteType().equals(APIMessage.DeleteType.deleteText)) {
+            // 텍스트 삭제
+            textService.deleteText(message.getText());
+            sendMessage.sendToAllMessage(chatRoom, "텍스트가 삭제되었습니다.");
+        }
+
+
+        /* -------------------------------------------- ThreeD -------------------------------------------- */
+        else if (message.getSaveType().equals(APIMessage.SaveType.save3DData)) {
+            // 3D 데이터 저장
+            sendMessage.sendToAllMessage(chatRoom, threeDService.saveThreeD(message.getThreeD()));
+        } else if (message.getDeleteType().equals(APIMessage.DeleteType.delete3DData)) {
+            // 3D 데이터 삭제
+            threeDService.deleteThreeD(message.getThreeD());
+            sendMessage.sendToAllMessage(chatRoom, "3D 데이터가 삭제되었습니다.");
         }
     }
 }
