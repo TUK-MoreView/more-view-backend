@@ -59,8 +59,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/sign-in", "api/login").permitAll()
                         .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll() // 스웨거 경로 허용
                         .requestMatchers(("/file/**")).permitAll()
-                        .requestMatchers("/ws/**").permitAll()
-                        .requestMatchers("/chat-rooms/**").permitAll()
+                        .requestMatchers("/**").permitAll()
                         .anyRequest().authenticated()
                 )
 
