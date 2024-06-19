@@ -25,9 +25,9 @@ public class ThreeDAIController {
     }
 
     @GetMapping("/treeDAI")
-    @Operation(summary = "3D AI 조회", description = "이름을 받아 3D AI 정보를 조회합니다.")
-    public ThreeDAIResponse getThreeDAI(@RequestParam String name) {
-        return threeDAIService.getThreeDAI(name);
+    @Operation(summary = "3D AI 조회", description = "3D AI 정보를 조회합니다.")
+    public ThreeDAIResponse getThreeDAI() {
+        return threeDAIService.getThreeDAI();
     }
 
 }

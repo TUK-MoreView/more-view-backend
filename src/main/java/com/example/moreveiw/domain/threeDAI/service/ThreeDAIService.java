@@ -15,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.util.List;
 
 
 @Service
@@ -51,12 +52,11 @@ public class ThreeDAIService {
         return dataUrl;
     }
 
-    public ThreeDAIResponse getThreeDAI(String name) {
-        ThreeDAI threeDAI = threeDAIRepository.findByName(name).get();
-        ThreeDAIResponse threeDAIResponse = ThreeDAIResponse.builder().
-                id(threeDAI.getId()).
-                dataUri(threeDAI.getDataUri()).build();
-        return threeDAIResponse;
+    public ThreeDAIResponse getThreeDAI() {
+        List<ThreeDAI> threeDAI = threeDAIRepository.findAll();
+        return ThreeDAIResponse.builder()
+                .threeDAIList(threeDAI)
+                .build();
     }
 
     @Getter
