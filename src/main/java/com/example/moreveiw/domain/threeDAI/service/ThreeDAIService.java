@@ -27,7 +27,7 @@ public class ThreeDAIService {
 
     public String makeThreeDAI(String name) throws IOException {
         // Prepare request
-        String url = "http://34.207.250.239:8000/generate";
+        String url = "http://54.165.70.178:8000/generate";
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "application/json");
         String body = "{\"inputText\": \"" + name + "\"}";
