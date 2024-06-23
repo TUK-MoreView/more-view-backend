@@ -56,7 +56,7 @@ public class SecurityConfig {
                 )
 
                 .authorizeHttpRequests(authorizeHttpRequest -> authorizeHttpRequest
-                        .requestMatchers("/api/sign-in", "api/login").permitAll()
+                        .requestMatchers("/api/**").permitAll()
                         .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll() // 스웨거 경로 허용
                         .requestMatchers(("/file/**")).permitAll()
                         .requestMatchers("/ws/**").permitAll()
