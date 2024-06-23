@@ -26,4 +26,5 @@ public class FriendListByTimeSmallBean {
                 .createdAt(friendDAO.getCreatedAt())
                 .build()).collect(Collectors.toList());
     }
+    
 }
