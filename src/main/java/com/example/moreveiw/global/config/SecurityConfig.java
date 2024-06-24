@@ -56,19 +56,12 @@ public class SecurityConfig {
                 )
 
                 .authorizeHttpRequests(authorizeHttpRequest -> authorizeHttpRequest
-                        .requestMatchers("/api/sign-in", "api/login/**").permitAll()
+                        .requestMatchers("/api/**").permitAll()
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                         .requestMatchers(("/file/**")).permitAll()
                         .requestMatchers("/ws/**").permitAll()
                         .requestMatchers("/chat-rooms/**").permitAll()
                         .requestMatchers("/treeDAI/**").permitAll()
-                        .requestMatchers("/api/friend/request/**").permitAll()
-                        .requestMatchers("/api/friend/requests/**").permitAll()
-                        .requestMatchers("/api/friend/requested/**").permitAll()
-                        .requestMatchers("/api/friend/accept/**").permitAll()
-                        .requestMatchers("/api/friend/reject/**").permitAll()
-                        .requestMatchers("/api/friends/**").permitAll()
-                        .requestMatchers("/api/friend/**").permitAll()
                         .anyRequest().authenticated()
                 )
 
