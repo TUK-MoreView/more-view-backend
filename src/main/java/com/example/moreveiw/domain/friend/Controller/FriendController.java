@@ -34,9 +34,9 @@ public class FriendController {
     //친구 추가 요청받은 목록
     @Operation(summary = "친구 추가 요청보낸 목록", security = @SecurityRequirement(name = "bearerAuth"))
     @GetMapping("/friend/requests/{memberId}")
-    public List<FriendRequestListResponseDTO> requestList(@PathVariable Long memberId,
-                                                          @Parameter @Min(0) Integer page,
-                                                          @Parameter @Min(0) @Max(10) Integer size) {
+    public List<FriendRequestListResponseDTO> requestList(@PathVariable(value = "memberId") Long memberId,
+                                                          @RequestParam(value = "page") @Min(0) Integer page,
+                                                          @RequestParam(value = "size") @Min(0) @Max(10) Integer size) {
         return friendService.requestList(memberId, page, size);
     }
 
@@ -50,9 +50,9 @@ public class FriendController {
     //친구 추가 요청보낸 목록
     @Operation(summary = "친구 추가 요청받은 목록", security = @SecurityRequirement(name = "bearerAuth"))
     @GetMapping("/friend/requested/{memberId}")
-    public List<FriendRequestListResponseDTO> requestedList(@PathVariable Long memberId,
-                                      @Parameter @Min(0) Integer page,
-                                      @Parameter @Min(0) @Max(10) Integer size) {
+    public List<FriendRequestListResponseDTO> requestedList(@PathVariable(value = "memberId") Long memberId,
+                                                            @RequestParam(value = "page") @Min(0) Integer page,
+                                                            @RequestParam(value = "size") @Min(0) @Max(10) Integer size) {
         return friendService.requestedList(memberId, page, size);
     }
 
@@ -74,9 +74,9 @@ public class FriendController {
     @Operation(summary = "친구 목록", security = @SecurityRequirement(name = "bearerAuth"))
     @GetMapping("/friends/{memberId}")
     public List<FriendListResponseDTO> friendList(@PathVariable Long memberId,
-                                                  @Parameter @Min(0) Integer page,
-                                                  @Parameter @Min(0) @Max(10) Integer size,
-                                                  @RequestParam(defaultValue = "TIME") FriendSort sort) {
+                                                  @RequestParam(value = "page") @Min(0) Integer page,
+                                                  @RequestParam(value = "size") @Min(0) @Max(10) Integer size,
+                                                  @RequestParam(value = "sort", defaultValue = "TIME") FriendSort sort) {
         return friendService.friendList(memberId, page, size, sort);
     }
 
