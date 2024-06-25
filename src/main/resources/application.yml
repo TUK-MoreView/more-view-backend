@@ -11,27 +11,42 @@ server:
 
 spring:
     datasource:
-        driver-class-name: ${SPRING_DATASOURCE_DRIVER_CLASS_NAME}
-        url: ${SPRING_DATASOURCE_URL}
-        username: ${SPRING_DATASOURCE_USERNAME}
-        password: ${SPRING_DATASOURCE_PASSWORD}
+        driver-class-name: ${DRIVER_CLASS_NAME}
+        url: ${JDBC_URL}
+        username: ${USERNAME}
+        password: ${PASSWORD}
     sql:
         init:
             mode: never
-
-jpa:
-    hibernate:
-        ddl-auto: update
-    properties:
+    jpa:
         hibernate:
-            dialect: org.hibernate.dialect.MySQL8Dialect
+            ddl-auto: update
+        properties:
+            hibernate:
+                dialect: org.hibernate.dialect.MySQL8Dialect
 
 springdoc:
-    packages-to-scan: com.example.moreview
-    default-consumes-media-type: application/json;charset=UTF-8
-    default-produces-media-type: application/json;charset=UTF-8
+    api-docs:
+        enabled: true
+        path: /v3/api-docs
     swagger-ui:
-        path: /
-        disable-swagger-default-url: true
+        path: /swagger-ui.html
         display-request-duration: true
-        operations-sorter: method
+        disable-swagger-default-url: true
+
+jwt:
+    header: ${JWT_HEADER}
+    secret: ${JWT_SECRET}
+    token-validity-in-seconds: 86400
+
+cloud:
+    aws:
+        credentials:
+            accessKey: ${AWS_ACCESS_KEY}
+            secretKey: ${AWS_SECRET_KEY}
+        region:
+            static: ap-northeast-2
+        stack:
+            auto: false
+        s3:
+            bucket: moreview-2
