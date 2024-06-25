@@ -25,9 +25,13 @@ jobs:
         run: |
           echo "${{ secrets.SECRET }}" > src/main/resources/secrets.properties
 
+      - name: Gradle 설정
+        uses: gradle/actions/setup-gradle@v3.4.2
+        with:
+          gradle-version: '8.7'
 
       - name: Build with Gradle
-        uses: gradle/actions@v3.4.2 # v2.6.0
+        uses: gradle/actions/dependency-submission@v3.4.2 # v2.6.0
         with:
           arguments: build
 
