@@ -13,8 +13,8 @@ spring:
     datasource:
         driver-class-name: ${DRIVER_CLASS_NAME}
         url: ${JDBC_URL}
-        username: ${USERNAME}
-        password: ${PASSWORD}
+        username: ${DB_USERNAME}
+        password: ${DB_PASSWORD}
     sql:
         init:
             mode: never
@@ -23,6 +23,8 @@ spring:
             ddl-auto: update
         properties:
             hibernate:
+                format_sql: true
+                default_batch_fetch_size: 100
                 dialect: org.hibernate.dialect.MySQL8Dialect
 
 springdoc:
