@@ -62,10 +62,6 @@ jobs:
           port: 22
           script: |
             pkill -f moreveiw-0.0.1-SNAPSHOT.jar || true
+            sudo echo "${{ secrets.SECRET }}" > .env
 
             nohup java -jar /home/ubuntu/moreveiw-0.0.1-SNAPSHOT.jar > log.txt 2>&1 &
-
-
-      - name: Clean up previous log files
-        run: |
-          ssh -i "./key.pem" ubuntu@${{ secrets.HOST }} 'rm -f log.txt'
