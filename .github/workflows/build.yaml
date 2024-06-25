@@ -38,7 +38,6 @@ jobs:
         run: |
           
           rm src/main/resources/secrets.properties
-          
           ./gradlew jib -Djib.to.image=${{secrets.DOCKER_USERNAME}}/${{secrets.REPOSITORY_NAME}} -Djib.to.tags=${{ github.event.pull_request.number }},latest
 
       - name: Deploy
