@@ -8,5 +8,5 @@ import org.springframework.context.annotation.PropertySources;
 @PropertySources({
         @PropertySource(value = "classpath:secrets.properties", ignoreResourceNotFound = true),
 })
-public class PropertyConfig {
+public class PropertySetting {
 }
