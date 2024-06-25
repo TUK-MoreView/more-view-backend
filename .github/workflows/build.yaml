@@ -53,15 +53,19 @@ jobs:
       - uses: actions/checkout@v4
 
 
-
-      - name: executing remote ssh commands using ssh key
+      - name: SSH into remote server, kill previous process, and run JAR file in background
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
+          username: ubuntu
           key: ${{ secrets.SSH_KEY }}
           port: 22
           script: |
-            cd /home/ubuntu
-            pwd
-            sh deploy-ssh.sh
+            pkill -f moreveiw-0.0.1-SNAPSHOT.jar || true
+
+            nohup java -jar /home/ubuntu/moreveiw-0.0.1-SNAPSHOT.jar > log.txt 2>&1 &
+
+
+      - name: Clean up previous log files
+        run: |
+          ssh -i "./key.pem" ubuntu@${{ secrets.HOST }} 'rm -f log.txt'
