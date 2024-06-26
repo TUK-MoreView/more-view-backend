@@ -12,6 +12,16 @@ java {
     sourceCompatibility = '17'
 }
 
+jib {
+    from {
+        image = 'adoptopenjdk:17-jre-hotspot'
+    }
+    to {
+        image = 'myregistry/myimage'
+        tags = ['latest', 'v1.0']
+    }
+}
+
 configurations {
     compileOnly {
         extendsFrom annotationProcessor
