@@ -34,11 +34,8 @@ jobs:
 
 
       - name: Build with Jib
-        run: |
-          source .bashrc
-          
+        run: |          
           rm src/main/resources/secrets.properties 
-          rm .bashrc
           
           ./gradlew jib -Djib.to.image=${{secrets.DOCKER_USERNAME}}/${{secrets.REPOSITORY_NAME}} -Djib.to.tags=${{ github.event.pull_request.number }},latest
 
