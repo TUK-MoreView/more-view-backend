@@ -34,6 +34,8 @@ jobs:
 
       - name: Build with Jib
         run: |
+          chmod +x ./gradlew
+
           source .bashrc
           
           rm src/main/resources/secrets.properties 
