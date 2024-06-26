@@ -14,7 +14,7 @@ java {
 
 jib {
     from {
-        image = 'adoptopenjdk:17-jre-hotspot'
+        image = 'openjdk:17-jdk'
     }
     to {
         image = 'myregistry/myimage'
