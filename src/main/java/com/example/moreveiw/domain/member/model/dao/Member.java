@@ -2,6 +2,7 @@ package com.example.moreveiw.domain.member.model.dao;
 
 import com.example.moreveiw.domain.base.BaseEntity;
 import com.example.moreveiw.domain.friend.Model.DAO.FriendDAO;
+import com.example.moreveiw.domain.project.model.dao.Project;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.*;
@@ -35,6 +36,9 @@ public class Member extends BaseEntity {
 
     @OneToMany(mappedBy = "friend", cascade = CascadeType.ALL)
     private List<FriendDAO> friends = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<Project> projects = new ArrayList<>();
 
     @JoinTable(
             name = "user_authority",
