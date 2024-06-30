@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ProjectController {
 
-    @Operation(summary = "프로젝트 목록", description = "내가 생성한 프로젝트 목록 불러오기")
+    @Operation(summary = "프로젝트 목록", description = "내가 생성한 프로젝트 목록 조회하기")
     @GetMapping("/project")
     public ResponseEntity<?> getProjectList() {
         return null;
