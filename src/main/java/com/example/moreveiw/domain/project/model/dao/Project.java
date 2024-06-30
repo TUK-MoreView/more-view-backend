@@ -6,6 +6,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @Builder
@@ -23,6 +25,8 @@ public class Project extends BaseEntity {
     private Long roomId;
 
     private String thumbnailUrl;
+
+    private LocalDateTime createdAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
