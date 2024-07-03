@@ -29,7 +29,7 @@ public class ProjectController {
 
     private final static int PAGE_SIZE = 10;
 
-    private final ProjectsService projectService;
+    private final ProjectsService projectsService;
     private final ProjectService projectService;
 
     @Operation(summary = "프로젝트 목록", description = "내가 생성한 프로젝트 목록 조회하기")
@@ -63,6 +63,6 @@ public class ProjectController {
     @Operation(summary = "Get Project Objects")
     @GetMapping("/project0/{projectId}")
     public ObjectResponse requestList(@PathVariable(value = "projectId") Long projectId) {
-        return projectService.getProjectByObject(projectId);
+        return projectsService.getProjectByObject(projectId);
     }
 }
