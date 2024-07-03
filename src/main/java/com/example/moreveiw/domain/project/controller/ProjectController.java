@@ -1,5 +1,9 @@
 package com.example.moreveiw.domain.project.controller;
 
+import com.example.moreveiw.domain.friend.Model.DTO.Friend.Request.FriendRequestDTO;
+import com.example.moreveiw.domain.friend.Model.DTO.StateResponseDTO;
+import com.example.moreveiw.domain.project.model.dao.project;
+import com.example.moreveiw.domain.project.model.dto.request.ProjectCreateRequest;
 import com.example.moreveiw.domain.project.model.dto.response.ObjectResponse;
 import com.example.moreveiw.domain.project.service.ProjectsService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,11 +22,15 @@ public class ProjectController {
 
     private final ProjectsService projectService;
 
-    //친구 추가 요청받은 목록
     @Operation(summary = "Get Project Objects")
-    @GetMapping("/project0/{projectId}")
+    @GetMapping("/project/{projectId}")
     public ObjectResponse requestList(@PathVariable(value = "projectId") Long projectId) {
         return projectService.getProjectByObject(projectId);
     }
 
+    @Operation(summary = "Post Project")
+    @PostMapping("/project")
+    public project acceptFriend(@RequestBody ProjectCreateRequest projectCreateRequest) {
+        return projectService.postProject(projectCreateRequest);
+    }
 }
