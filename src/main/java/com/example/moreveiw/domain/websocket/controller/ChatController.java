@@ -1,7 +1,7 @@
 package com.example.moreveiw.domain.websocket.controller;
 
 import com.example.moreveiw.domain.websocket.entitiy.ProjectRoom;
-import com.example.moreveiw.domain.websocket.service.ProjectService;
+import com.example.moreveiw.domain.websocket.service.WebsocketService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +15,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = "WebSocket Controller", description = "WebSocket 관련 API")
 public class ChatController {
 
-    private final ProjectService chatService;
+    private final WebsocketService chatService;
 
     // RoomName으로 채팅방 생성
     @PostMapping
