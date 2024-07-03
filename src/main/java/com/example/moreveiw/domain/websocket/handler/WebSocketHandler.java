@@ -2,11 +2,10 @@ package com.example.moreveiw.domain.websocket.handler;
 
 import com.example.moreveiw.domain.websocket.entitiy.APIMessage;
 import com.example.moreveiw.domain.websocket.entitiy.ProjectRoom;
-import com.example.moreveiw.domain.websocket.service.ProjectService;
+import com.example.moreveiw.domain.websocket.service.WebsocketService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -17,7 +16,7 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 @Slf4j
 public class WebSocketHandler extends TextWebSocketHandler {
 
-    private final ProjectService chatService;
+    private final WebsocketService chatService;
     private final ObjectMapper objectMapper;
     private String roomId;
     private ProjectRoom chatRoom;

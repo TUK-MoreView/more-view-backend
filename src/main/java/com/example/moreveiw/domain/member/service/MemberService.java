@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 
 @Service
 @RequiredArgsConstructor
@@ -36,8 +38,18 @@ public class MemberService {
         return memberMapper.toResponse(
                 SecurityUtil.getCurrentUsername()
                         .flatMap(memberRepository::findOneWithAuthoritiesByEmail)
-                        .orElseThrow(() -> new NotFoundMemberException("Member not found"))
+                        .orElseThrow(() -> new NotFoundMemberException("회원을 찾을 수 없습니다."))
         );
     }
+
+    public Optional<Member> findByEmailOptional(final String email) {
+        return memberRepository.findByEmail(email);
+    }
+
+    public String getCurrentMemberEmail() {
+        return SecurityUtil.getCurrentUsername()
+                .orElseThrow(() -> new NotFoundMemberException("해당 이메일의 회원을 찾을 수 없습니다."));
+    }
+
 
 }

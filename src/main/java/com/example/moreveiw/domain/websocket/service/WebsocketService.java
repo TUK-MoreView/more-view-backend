@@ -25,7 +25,7 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class ProjectService {
+public class WebsocketService {
 
     // repository 대신 사용
     private Map<String, ProjectRoom> projectRooms;
