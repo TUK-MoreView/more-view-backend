@@ -1,6 +1,8 @@
 package com.example.moreveiw.domain.websocket.service;
 
 import com.example.moreveiw.domain.image.service.ImageService;
+import com.example.moreveiw.domain.project.model.dao.project;
+import com.example.moreveiw.domain.project.repository.ProjectRepository;
 import com.example.moreveiw.domain.shape.circle.editor.CircleEditor;
 import com.example.moreveiw.domain.shape.circle.service.CircleService;
 import com.example.moreveiw.domain.shape.line.editor.LineEditor;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -27,6 +30,7 @@ import java.util.UUID;
 @Slf4j
 public class ProjectService {
 
+    private final ProjectRepository projectRepository;
     // repository 대신 사용
     private Map<String, ProjectRoom> projectRooms;
 
@@ -34,8 +38,24 @@ public class ProjectService {
     @PostConstruct
     public void init() {
         projectRooms = new LinkedHashMap<>();
+        initializeProjectRooms();
     }
 
+    private void initializeProjectRooms() {
+        // 데이터베이스에서 모든 프로젝트를 조회
+        List<project> projects = projectRepository.findAll();
+        for (project project : projects) {
+            // 각 프로젝트에 대해 새로운 방을 생성
+            String randomId = UUID.randomUUID().toString();
+            project.setRoomId(randomId);
+            projectRepository.save(project);
+
+            ProjectRoom projectRoom = ProjectRoom.builder()
+                    .roomId(randomId)
+                    .build();
+            projectRooms.put(projectRoom.getRoomId(), projectRoom);
+        }
+    }
     // 채팅방 생성
     public ProjectRoom createProjectRoom() {
         String randomId = UUID.randomUUID().toString();
