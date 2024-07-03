@@ -13,10 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.stream.Collectors;
 
@@ -32,12 +29,12 @@ public class ProjectController {
     private final ProjectService projectService;
 
     @Operation(summary = "프로젝트 목록", description = "내가 생성한 프로젝트 목록 조회하기")
-    @GetMapping("/project")
-    public ResponseEntity<ProjectPaging> getProjectList(
-            @Parameter(description = "페이지 번호 (0부터 시작, 기본값 0)", example = "0")
-            @RequestParam(value = "page", required = false, defaultValue = "0") final int page) {
+    @GetMapping("/project/{memberId}")
+    public ResponseEntity<ProjectPaging> getProjectList(@Parameter(description = "페이지 번호 (0부터 시작, 기본값 0)", example = "0")
+                                                        @PathVariable(value = "memberId") Long memberId,
+                                                        @RequestParam(value = "page", required = false, defaultValue = "0") final int page) {
         Pageable pageable = PageRequest.of(page, PAGE_SIZE);
-        Page<Project> projectPage = projectService.getProjectList(pageable);
+        Page<Project> projectPage = projectService.getProjectList(memberId, pageable);
 
         ProjectPaging projectPaging = ProjectPaging.builder()
                 .projects(projectPage.getContent().stream()
@@ -57,5 +54,4 @@ public class ProjectController {
 
         return ResponseEntity.ok(projectPaging);
     }
-
 }
