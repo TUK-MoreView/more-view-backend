@@ -1,6 +1,5 @@
 package com.example.moreveiw.domain.project.model.dao;
 
-import com.example.moreveiw.domain.base.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.*;
 import lombok.*;
@@ -12,7 +11,9 @@ import javax.persistence.Id;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class project extends BaseEntity {
+@Builder
+@Setter
+public class project {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,7 +22,7 @@ public class project extends BaseEntity {
 
     private String name;
 
-    private Long roomId;
+    private String roomId;
 
     private String thumbnailUrl;
 
