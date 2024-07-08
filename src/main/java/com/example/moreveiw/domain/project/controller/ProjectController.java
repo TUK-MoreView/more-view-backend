@@ -2,6 +2,8 @@ package com.example.moreveiw.domain.project.controller;
 
 import com.example.moreveiw.domain.project.constant.ProjectResponseConstant;
 import com.example.moreveiw.domain.project.model.dao.Project;
+import com.example.moreveiw.domain.project.model.dto.request.PostProjectMemberRequest;
+import com.example.moreveiw.domain.project.model.dto.request.ProjectCreateRequest;
 import com.example.moreveiw.domain.project.model.dto.response.ObjectResponse;
 import com.example.moreveiw.domain.project.model.dto.response.ProjectPaging;
 import com.example.moreveiw.domain.project.model.dto.response.ProjectSingleResponse;
@@ -60,6 +62,14 @@ public class ProjectController {
                                 .roomId(project.getRoomId().toString())
                                 .thumbnailUrl(project.getThumbnailUrl())
                                 .createdAt(project.getCreatedAt())
+                                .members(project.getMembers().stream()
+                                        .map(member -> ProjectSingleResponse.MemberDTO.builder()
+                                                .memberId(member.getMember().getId())
+                                                .name(member.getMember().getName())
+                                                .email(member.getMember().getEmail())
+                                                .build())
+                                        .collect(Collectors.toList()
+                                        ))
                                 .build())
                         .collect(Collectors.toList()))
                 .totalPage(projectPage.getTotalPages())
@@ -73,8 +83,21 @@ public class ProjectController {
   
   
     @Operation(summary = "Get Project Objects")
-    @GetMapping("/project0/{projectId}")
-    public ObjectResponse requestList(@PathVariable(value = "projectId") Long projectId) {
+    @GetMapping("/project/{projectId}")
+    public ObjectResponse getProjectByObject(@PathVariable(value = "projectId") Long projectId) {
         return projectService.getProjectByObject(projectId);
+    }
+
+    @Operation(summary = "Post project")
+    @PostMapping("/project")
+    public ProjectSingleResponse postProject(@RequestBody ProjectCreateRequest projectCreateRequest) {
+        return projectService.postProject(projectCreateRequest);
+    }
+
+    //roomId로 member 추가
+    @Operation(summary = "Post project member")
+    @PostMapping("/project/member")
+    public ProjectSingleResponse postProjectMember(@RequestBody PostProjectMemberRequest postProjectMemberRequest) {
+        return projectService.postProjectMember(postProjectMemberRequest);
     }
 }
