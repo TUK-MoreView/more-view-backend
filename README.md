@@ -42,10 +42,13 @@ http://54.174.122.35:8080/swagger-ui/index.html
 
 <br>
 
-## 🛠️ Architecture Structure
+## 🛠️ System Configuration Diagram
 <img src="https://github.com/TUK-MoreView/more-view-backend/assets/114092152/f95b2099-7b47-45c2-b9d1-51aaa64f4e08" height="400" width="600">
 <br>
 
+## 👷 Architecture
+<img src="https://github.com/TUK-MoreView/more-view-backend/assets/114092152/fa370315-27bb-467f-b847-6cde72930446" height="400" width="600">
+<br>
 
 
 
