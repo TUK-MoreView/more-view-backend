@@ -6,7 +6,6 @@ import com.example.moreveiw.domain.project.model.dto.response.ObjectResponse;
 import com.example.moreveiw.domain.project.model.dto.response.ProjectPaging;
 import com.example.moreveiw.domain.project.model.dto.response.ProjectSingleResponse;
 import com.example.moreveiw.domain.project.service.ProjectService;
-import com.example.moreveiw.domain.project.service.ProjectsService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -35,7 +34,6 @@ public class ProjectController {
 
     private final static int PAGE_SIZE = 10;
 
-    private final ProjectsService projectsService;
     private final ProjectService projectService;
 
     @Operation(summary = "프로젝트 목록", description = "내가 생성한 프로젝트 목록 조회하기")
@@ -77,6 +75,6 @@ public class ProjectController {
     @Operation(summary = "Get Project Objects")
     @GetMapping("/project0/{projectId}")
     public ObjectResponse requestList(@PathVariable(value = "projectId") Long projectId) {
-        return projectsService.getProjectByObject(projectId);
+        return projectService.getProjectByObject(projectId);
     }
 }
