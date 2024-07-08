@@ -7,12 +7,16 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
 @Builder
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Setter
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
 @AllArgsConstructor
+@Table(name = "project")
 public class Project extends BaseEntity {
 
     @Id
@@ -22,14 +26,14 @@ public class Project extends BaseEntity {
 
     private String name;
 
-    private Long roomId;
+    private String roomId;
 
     private String thumbnailUrl;
 
     private LocalDateTime createdAt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+    private List<ProjectLinkMember> members = new ArrayList<>();
+
 
 }

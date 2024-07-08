@@ -3,6 +3,7 @@ package com.example.moreveiw.domain.member.model.dao;
 import com.example.moreveiw.domain.base.BaseEntity;
 import com.example.moreveiw.domain.friend.Model.DAO.FriendDAO;
 import com.example.moreveiw.domain.project.model.dao.Project;
+import com.example.moreveiw.domain.project.model.dao.ProjectLinkMember;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.*;
@@ -16,6 +17,7 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@Table(name = "member")
 public class Member extends BaseEntity {
 
     @Id
@@ -38,7 +40,7 @@ public class Member extends BaseEntity {
     private List<FriendDAO> friends = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-    private List<Project> projects = new ArrayList<>();
+    private List<ProjectLinkMember> projects = new ArrayList<>();
 
     @JoinTable(
             name = "user_authority",
