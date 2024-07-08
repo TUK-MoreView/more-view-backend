@@ -27,25 +27,25 @@ https://github.com/TUK-MoreView/more-view-web
 
 ## 📃 API
 http://54.174.122.35:8080/swagger-ui/index.html
-
-![image](https://github.com/why-only-english/why-only-english/assets/114092152/777619e4-7962-4124-8db4-133545d9089f)
 <br>
 
 ## ➡️️ Flowchart
-![image](https://github.com/why-only-english/why-only-english/assets/114092152/632e0bb0-842a-40af-a2fa-b7738d540c04)
+<img src="https://github.com/why-only-english/why-only-english/assets/114092152/632e0bb0-842a-40af-a2fa-b7738d540c04" height="200">
 <br>
 
 ## 📑 ERD
 초기 설계
-![image](https://github.com/why-only-english/why-only-english/assets/114092152/57caa7b5-e4c2-40c3-b88c-7ae55817f35f)
+<br>
+<img src="https://github.com/why-only-english/why-only-english/assets/114092152/57caa7b5-e4c2-40c3-b88c-7ae55817f35f" height="400" width="600">
 
 최종 
 
 <br>
 
 ## 🛠️ Architecture Structure
-![image](https://github.com/TUK-MoreView/more-view-backend/assets/114092152/f95b2099-7b47-45c2-b9d1-51aaa64f4e08)
+<img src="https://github.com/TUK-MoreView/more-view-backend/assets/114092152/f95b2099-7b47-45c2-b9d1-51aaa64f4e08" height="400" width="600">
 <br>
+
 
 
 
