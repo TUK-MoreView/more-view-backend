@@ -9,7 +9,6 @@ import com.example.moreveiw.domain.project.model.dto.response.ProjectPaging;
 import com.example.moreveiw.domain.project.model.dto.response.ProjectSingleResponse;
 import com.example.moreveiw.domain.project.service.ProjectService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -21,6 +20,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,12 +49,12 @@ public class ProjectController {
                                     value = ProjectResponseConstant.getProjectList,
                                     description = "프로젝트 목록이 조회되었습니다."
                             )))})
-    @GetMapping("/project/{memberId}")
-    public ResponseEntity<ProjectPaging> getProjectList(@Parameter(description = "페이지 번호 (0부터 시작, 기본값 0)", example = "0")
-                                                        @PathVariable(value = "memberId") Long memberId,
-                                                        @RequestParam(value = "page", required = false, defaultValue = "0") final int page) {
+    @GetMapping("/project")
+    public ResponseEntity<ProjectPaging> getProjectList(@RequestParam(value = "page", required = false, defaultValue = "0") final int page) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userEmail = ((UserDetails) authentication.getPrincipal()).getUsername();
         Pageable pageable = PageRequest.of(page, PAGE_SIZE);
-        Page<Project> projectPage = projectService.getProjectList(memberId, pageable);
+        Page<Project> projectPage = projectService.getProjectListByUserEmail(userEmail, pageable);
 
         ProjectPaging projectPaging = ProjectPaging.builder()
                 .projects(projectPage.getContent().stream()
@@ -80,8 +82,8 @@ public class ProjectController {
 
         return ResponseEntity.ok(projectPaging);
     }
-  
-  
+
+
     @Operation(summary = "Get Project Objects")
     @GetMapping("/project/{projectId}")
     public ObjectResponse getProjectByObject(@PathVariable(value = "projectId") Long projectId) {
@@ -91,10 +93,11 @@ public class ProjectController {
     @Operation(summary = "Post project")
     @PostMapping("/project")
     public ProjectSingleResponse postProject(@RequestBody ProjectCreateRequest projectCreateRequest) {
-        return projectService.postProject(projectCreateRequest);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userEmail = ((UserDetails) authentication.getPrincipal()).getUsername();
+        return projectService.postProject(userEmail, projectCreateRequest);
     }
 
-    //roomId로 member 추가
     @Operation(summary = "Post project member")
     @PostMapping("/project/member")
     public ProjectSingleResponse postProjectMember(@RequestBody PostProjectMemberRequest postProjectMemberRequest) {

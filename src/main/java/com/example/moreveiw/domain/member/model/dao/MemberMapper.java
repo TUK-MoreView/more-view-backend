@@ -23,6 +23,7 @@ public class MemberMapper {
                 .name(request.getName())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
+                .role(request.getRole().name())
                 .build();
 
         return member;

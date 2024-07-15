@@ -1,5 +1,6 @@
 package com.example.moreveiw.domain.member.model.dto.request;
 
+import com.example.moreveiw.domain.member.model.dao.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -19,4 +20,5 @@ public class MemberRequest {
     private String password;
     @NotBlank
     private String name;
+    private Role role;
 }

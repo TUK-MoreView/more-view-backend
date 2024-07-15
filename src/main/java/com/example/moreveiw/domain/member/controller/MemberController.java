@@ -56,6 +56,7 @@ public class MemberController {
         return new ResponseEntity<>(new TokenDto(jwt), httpHeaders, HttpStatus.OK);
     }
 
+
     @GetMapping("/user")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @Operation(summary = "유저 정보 조회", description = "로그인한 유저의 정보를 조회합니다.")
