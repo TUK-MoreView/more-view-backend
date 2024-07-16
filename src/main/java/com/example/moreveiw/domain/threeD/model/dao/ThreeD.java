@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 public class ThreeD {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long threeD_id;
+    private Long threeDId;
 
     private Long projectId;
 

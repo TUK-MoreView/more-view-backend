@@ -24,7 +24,7 @@ public class LineService {
 
     /* -------------------------------------------- DELETE -------------------------------------------- */
     public void deleteLine(Line line) {
-        lineRepository.deleteById(line.getLine_id());
+        lineRepository.deleteById(line.getLineId());
     }
 
     /* -------------------------------------------- DELETE 끝 -------------------------------------------- */

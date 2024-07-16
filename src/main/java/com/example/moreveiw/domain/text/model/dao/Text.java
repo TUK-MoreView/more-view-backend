@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class Text {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long text_id;
+    private Long textId;
 
     private Long projectId;
 

@@ -17,7 +17,7 @@ public class Circle {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long circle_id;
+    private Long circleId;
 
     private Long projectId;
 

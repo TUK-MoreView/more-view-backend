@@ -23,7 +23,7 @@ public class RectangleService {
 
     /* -------------------------------------------- DELETE -------------------------------------------- */
     public void deleteRectangle(Rectangle rectangle) {
-        rectangleRepository.deleteById(rectangle.getRectangle_id());
+        rectangleRepository.deleteById(rectangle.getRectangleId());
     }
 
     /* -------------------------------------------- DELETE 끝 -------------------------------------------- */
