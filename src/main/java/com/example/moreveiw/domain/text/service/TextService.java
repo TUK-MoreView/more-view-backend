@@ -15,6 +15,6 @@ public class TextService {
     }
 
     public void deleteText(Text text) {
-        textRepository.deleteById(text.getId());
+        textRepository.deleteById(text.getText_id());
     }
 }

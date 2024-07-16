@@ -1,7 +1,6 @@
 package com.example.moreveiw.domain.shape.line.model.dao;
 
 import com.example.moreveiw.domain.shape.line.editor.LineEditor;
-import com.example.moreveiw.domain.shape.rectangle.editor.RectangleEditor;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,30 +17,34 @@ public class Line {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long line_id;
 
     private Long projectId;
 
-    private double x;
-    private double y;
+    private String id;
 
+    private int[] points = new int[4];
     private int strokeWidth;
 
-    private String color;
+    private String stroke;
+
+    private String type;
 
     public LineEditor.LineEditorBuilder toEditor() {
         return LineEditor.builder()
-                .x(x)
-                .y(y)
                 .strokeWidth(strokeWidth)
-                .color(color);
+                .stroke(stroke)
+                .id(id)
+                .type(type)
+                .points(points);
     }
 
     public void edit(final LineEditor editor) {
-        this.x = editor.getX();
-        this.y = editor.getY();
+        this.id = editor.getId();
+        this.type = editor.getType();
+        this.points = editor.getPoints();
         this.strokeWidth = editor.getStrokeWidth();
-        this.color = editor.getColor();
+        this.stroke = editor.getStroke();
     }
 
 }

@@ -17,17 +17,20 @@ public class Circle {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long circle_id;
 
     private Long projectId;
 
-    private double x;
-    private double y;
+    private String id;
+    private int x;
+    private int y;
 
     private Long radiusX;
     private Long radiusY;
 
-    private String color;
+    private String fill;
+
+    private String type;
 
     public CircleEditor.CircleEditorBuilder toEditor() {
         return CircleEditor.builder()
@@ -35,15 +38,19 @@ public class Circle {
                 .y(y)
                 .radiusX(radiusX)
                 .radiusY(radiusY)
-                .color(color);
+                .color(fill)
+                .id(id)
+                .type(type);
     }
 
     public void edit(final CircleEditor editor) {
         this.x = editor.getX();
         this.y = editor.getY();
+        this.id = editor.getId();
+        this.type = editor.getType();
         this.radiusX = editor.getRadiusX();
         this.radiusY = editor.getRadiusY();
-        this.color = editor.getColor();
+        this.fill = editor.getColor();
     }
 
 }

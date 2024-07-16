@@ -15,15 +15,17 @@ import lombok.NoArgsConstructor;
 public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long image_id;
 
     private Long projectId;
 
-    private String imageUri;
-    private String x;
-    private String y;
 
-    private float width;
-    private float height;
+    private String id;
+    private String imageUri;
+    private int x;
+    private int y;
+
+    private int width;
+    private int height;
 
 }
