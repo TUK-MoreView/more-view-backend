@@ -17,7 +17,7 @@ public class Rectangle {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long rectangle_id;
+    private Long rectangleId;
 
     private Long projectId;
 

@@ -23,7 +23,7 @@ public class CircleService {
 
     /* -------------------------------------------- DELETE -------------------------------------------- */
     public void deleteCircle(Circle circle) {
-        circleRepository.deleteById(circle.getCircle_id());
+        circleRepository.deleteById(circle.getCircleId());
     }
 
     /* -------------------------------------------- DELETE 끝 -------------------------------------------- */

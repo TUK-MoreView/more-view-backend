@@ -15,6 +15,6 @@ public class ThreeDService {
     }
 
     public void deleteThreeD(ThreeD threeD) {
-        threeDRepository.deleteById(threeD.getThreeD_id());
+        threeDRepository.deleteById(threeD.getThreeDId());
     }
 }

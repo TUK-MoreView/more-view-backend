@@ -17,7 +17,7 @@ public class Line {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long line_id;
+    private Long lineId;
 
     private Long projectId;
 
