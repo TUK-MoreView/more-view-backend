@@ -17,17 +17,19 @@ public class Rectangle {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long rectangle_id;
 
     private Long projectId;
 
-    private double x;
-    private double y;
+    private String id;
+    private int x;
+    private int y;
 
-    private float width;
-    private float height;
+    private int width;
+    private int height;
 
-    private String color;
+    private String fill;
+    private String type;
 
     public RectangleEditor.RectangleEditorBuilder toEditor() {
         return RectangleEditor.builder()
@@ -35,7 +37,9 @@ public class Rectangle {
                 .y(y)
                 .width(width)
                 .height(height)
-                .color(color);
+                .color(fill)
+                .id(id)
+                .type(type);
     }
 
     public void edit(final RectangleEditor editor) {
@@ -43,7 +47,9 @@ public class Rectangle {
         this.y = editor.getY();
         this.width = editor.getWidth();
         this.height = editor.getHeight();
-        this.color = editor.getColor();
+        this.fill = editor.getColor();
+        this.id = editor.getId();
+        this.type = editor.getType();
     }
 
 }

@@ -23,7 +23,7 @@ public class CircleService {
 
     /* -------------------------------------------- DELETE -------------------------------------------- */
     public void deleteCircle(Circle circle) {
-        circleRepository.deleteById(circle.getId());
+        circleRepository.deleteById(circle.getCircle_id());
     }
 
     /* -------------------------------------------- DELETE 끝 -------------------------------------------- */
@@ -33,7 +33,7 @@ public class CircleService {
     @Transactional
     public Circle editCircle(final Long id, final CircleEditor editor) {
 
-        Circle circle = circleRepository.findById(id)
+        Circle circle = circleRepository.findByCircleId(id)
                 .orElseThrow(() -> new IllegalArgumentException("Circle not found"));
 
         CircleEditor circleEditor = getCircleEditor(editor, circle);
@@ -50,6 +50,8 @@ public class CircleService {
                 .radiusX(editor.getRadiusX())
                 .radiusY(editor.getRadiusY())
                 .color(editor.getColor())
+                .id(editor.getId())
+                .type(editor.getType())
                 .build();
         return circleEditor;
     }

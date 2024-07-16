@@ -24,7 +24,7 @@ public class LineService {
 
     /* -------------------------------------------- DELETE -------------------------------------------- */
     public void deleteLine(Line line) {
-        lineRepository.deleteById(line.getId());
+        lineRepository.deleteById(line.getLine_id());
     }
 
     /* -------------------------------------------- DELETE 끝 -------------------------------------------- */
@@ -34,7 +34,7 @@ public class LineService {
     @Transactional
     public Line editLine(final Long id, final LineEditor editor) {
 
-        Line line = lineRepository.findById(id)
+        Line line = lineRepository.findByLineId(id)
                 .orElseThrow(() -> new IllegalArgumentException("Line not found"));
 
         LineEditor lineEditor = getLineEditor(editor, line);
@@ -46,10 +46,11 @@ public class LineService {
     private LineEditor getLineEditor(final LineEditor editor, final Line line) {
         LineEditor.LineEditorBuilder editorBuilder = line.toEditor();
         LineEditor lineEditor = editorBuilder
-                .x(editor.getX())
-                .y(editor.getY())
+                .id(editor.getId())
+                .points(editor.getPoints())
+                .type(editor.getType())
+                .stroke(editor.getStroke())
                 .strokeWidth(editor.getStrokeWidth())
-                .color(editor.getColor())
                 .build();
         return lineEditor;
     }

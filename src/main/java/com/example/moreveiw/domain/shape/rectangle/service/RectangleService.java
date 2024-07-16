@@ -23,7 +23,7 @@ public class RectangleService {
 
     /* -------------------------------------------- DELETE -------------------------------------------- */
     public void deleteRectangle(Rectangle rectangle) {
-        rectangleRepository.deleteById(rectangle.getId());
+        rectangleRepository.deleteById(rectangle.getRectangle_id());
     }
 
     /* -------------------------------------------- DELETE 끝 -------------------------------------------- */
@@ -33,7 +33,7 @@ public class RectangleService {
     @Transactional
     public Rectangle editRectangle(final Long id, final RectangleEditor editor) {
 
-        Rectangle rectangle = rectangleRepository.findById(id)
+        Rectangle rectangle = rectangleRepository.findByRectangleId(id)
                 .orElseThrow(() -> new IllegalArgumentException("Rectangle not found"));
 
         RectangleEditor rectangleEditor = getRectangleEditor(editor, rectangle);
@@ -50,6 +50,8 @@ public class RectangleService {
                 .width(editor.getWidth())
                 .height(editor.getHeight())
                 .color(editor.getColor())
+                .id(editor.getId())
+                .type(editor.getType())
                 .build();
         return rectangleEditor;
     }
