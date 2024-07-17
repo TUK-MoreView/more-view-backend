@@ -28,8 +28,6 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         String username = obtainUsername(request);
         String password = obtainPassword(request);
 
-        System.out.println(username);
-
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password, null);
 
         return authenticationManager.authenticate(authToken);
@@ -48,15 +46,14 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         String role = auth.getAuthority();
 
-
-        String token = jwtUtil.createJwt(username, role, 60*60*10L);
+        // Todo 테스트 편의 위해 1주일로 늘려놓음 추후 변경
+        String token = jwtUtil.createJwt(username, role, 7 * 24 * 60 * 60L);
 
         response.addHeader("Authorization", "Bearer " + token);
     }
 
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) {
-
         response.setStatus(401);
     }
 }

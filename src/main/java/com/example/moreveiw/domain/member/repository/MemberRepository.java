@@ -10,9 +10,13 @@ import java.util.Optional;
 @Repository
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
-    Boolean existsByName(String name);
-    Member findByName(String name);
+    Boolean existsByUsername(String username);
+
+    Member findByUsername(String username);
+
     Optional<Member> findByEmail(String email);
+
     @EntityGraph(attributePaths = "authorities")
+
     Optional<Member> findOneWithAuthoritiesByEmail(String email);
 }

@@ -25,9 +25,9 @@ public class MemberController {
     @PostMapping(value = "/signup", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "회원가입", description = "새로운 회원을 가입시킵니다.")
     public String signup(@RequestPart("email") String email,
-                         @RequestPart("name") String name,
+                         @RequestPart("username") String username,
                          @RequestPart("password") String password) {
-        AuthRequest request = new AuthRequest(email, name, password);
+        AuthRequest request = new AuthRequest(email, username, password);
         authService.signup(request);
         return "회원가입 완료";
     }

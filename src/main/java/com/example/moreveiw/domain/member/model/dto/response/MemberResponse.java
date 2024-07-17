@@ -9,7 +9,7 @@ import lombok.Getter;
 @Getter
 public class MemberResponse {
 
-    private String name;
+    private String username;
     private String password;
     private String email;
     private String role;

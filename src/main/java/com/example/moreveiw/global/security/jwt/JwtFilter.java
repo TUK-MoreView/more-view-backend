@@ -26,34 +26,34 @@ public class JwtFilter extends OncePerRequestFilter {
         //  request에서 Authorization 헤더를 찾음
         String authorization= request.getHeader("Authorization");
 
-        //  Authorization 헤더 검증
+        // Authorization 헤더 검증
         if (authorization == null || !authorization.startsWith("Bearer ")) {
 
             System.out.println("token null");
             filterChain.doFilter(request, response);
 
-            //  조건이 해당되면 메소드 종료 (필수)
+            // 조건이 해당되면 메소드 종료 (필수)
             return;
         }
 
         String token = authorization.split(" ")[1];
 
-        //  토큰 소멸 시간 검증
+        // 토큰 소멸 시간 검증
         if (jwtUtil.isExpired(token)) {
 
             System.out.println("token expired");
             filterChain.doFilter(request, response);
 
-            //  조건이 해당되면 메소드 종료 (필수)
+            // 조건이 해당되면 메소드 종료 (필수)
             return;
         }
 
 
-        String name = jwtUtil.getUsername(token);
+        String username = jwtUtil.getUsername(token);
         String role = jwtUtil.getRole(token);
 
         Member member = Member.builder()
-                .name(name)
+                .username(username)
                 .password("temppassword")
                 .role(role)
                 .build();

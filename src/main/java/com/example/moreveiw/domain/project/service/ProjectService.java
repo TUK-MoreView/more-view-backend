@@ -86,7 +86,7 @@ public class ProjectService {
                 .createdAt(project.getCreatedAt())
                 .members(List.of(ProjectSingleResponse.MemberDTO.builder()
                         .memberId(member.getId())
-                        .name(member.getName())
+                        .name(member.getUsername())
                         .email(member.getEmail())
                         .build()))
                 .build();
@@ -108,7 +108,7 @@ public class ProjectService {
                 .members(project.getMembers().stream()
                         .map(member -> ProjectSingleResponse.MemberDTO.builder()
                                 .memberId(member.getMember().getId())
-                                .name(member.getMember().getName())
+                                .name(member.getMember().getUsername())
                                 .email(member.getMember().getEmail())
                                 .build())
                         .toList())

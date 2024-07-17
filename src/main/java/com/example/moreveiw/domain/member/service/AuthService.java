@@ -16,11 +16,11 @@ public class AuthService {
 
     public void signup(AuthRequest request) {
 
-        String name = request.getName();
+        String username = request.getUsername();
         String email = request.getEmail();
         String password = request.getPassword();
 
-        Boolean isExist = memberRepository.existsByName(name);
+        Boolean isExist = memberRepository.existsByUsername(username);
 
         if (isExist) {
 
@@ -29,7 +29,7 @@ public class AuthService {
         }
 
         Member data = Member.builder()
-                .name(name)
+                .username(username)
                 .email(email)
                 .password(bCryptPasswordEncoder.encode(password))
                 .role("ROLE_USER")

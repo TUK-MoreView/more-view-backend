@@ -9,6 +9,6 @@ public class AuthRequest {
 
     @Email
     private String email;
-    private String name;
+    private String username;
     private String password;
 }

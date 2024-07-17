@@ -23,7 +23,7 @@ public class GetReceivedFriendRequests {
                 .map(friendRequestDAO -> FriendRequestListResponseDTO.builder()
                         .friendId(friendRequestDAO.getId())
                         .friendEmail(userGetByIdSmallBean.exec(friendRequestDAO.getId()).getEmail())
-                        .friendName(userGetByIdSmallBean.exec(friendRequestDAO.getId()).getName())
+                        .friendName(userGetByIdSmallBean.exec(friendRequestDAO.getId()).getUsername())
                         .friendStatus(friendRequestDAO.getState())
                         .createdAt(friendRequestDAO.getCreatedAt())
                         .build())

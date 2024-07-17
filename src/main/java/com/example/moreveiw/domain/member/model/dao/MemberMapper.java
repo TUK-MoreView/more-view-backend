@@ -18,7 +18,7 @@ public class MemberMapper {
         return MemberResponse.builder()
                 .email(member.getEmail())
                 .role(member.getRole())
-                .name(member.getName())
+                .username(member.getUsername())
                 .build();
     }
 

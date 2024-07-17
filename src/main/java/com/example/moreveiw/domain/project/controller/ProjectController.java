@@ -67,7 +67,7 @@ public class ProjectController {
                                 .members(project.getMembers().stream()
                                         .map(member -> ProjectSingleResponse.MemberDTO.builder()
                                                 .memberId(member.getMember().getId())
-                                                .name(member.getMember().getName())
+                                                .name(member.getMember().getUsername())
                                                 .email(member.getMember().getEmail())
                                                 .build())
                                         .collect(Collectors.toList()
