@@ -53,7 +53,7 @@ public class MemberController {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
 
-        return new ResponseEntity<>(new TokenDto(jwt), httpHeaders, HttpStatus.OK);
+        return new ResponseEntity<>(new TokenDto(jwt, memberService.findByEmailOptional(request.getEmail()).get().getId()), httpHeaders, HttpStatus.OK);
     }
 
     @GetMapping("/user")
