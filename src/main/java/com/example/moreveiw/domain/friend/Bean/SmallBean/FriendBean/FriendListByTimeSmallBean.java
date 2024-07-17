@@ -22,7 +22,7 @@ public class FriendListByTimeSmallBean {
         return friendDAOS.stream().map(friendDAO -> FriendListResponseDTO.builder()
                 .friendId(friendDAO.getFriend().getId())
                 .friendEmail(friendDAO.getFriend().getEmail())
-                .friendName(friendDAO.getFriend().getName())
+                .friendName(friendDAO.getFriend().getUsername())
                 .createdAt(friendDAO.getCreatedAt())
                 .build()).collect(Collectors.toList());
     }

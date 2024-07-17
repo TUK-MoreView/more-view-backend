@@ -1,43 +1,29 @@
 package com.example.moreveiw.domain.member.service;
 
-
 import com.example.moreveiw.domain.member.model.dao.Member;
+import com.example.moreveiw.domain.member.model.dto.CustomUserDetails;
 import com.example.moreveiw.domain.member.repository.MemberRepository;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-@Component("userDetailService")
+@Service
+@RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 
     private final MemberRepository memberRepository;
 
-    public CustomUserDetailsService(MemberRepository memberRepository) {
-        this.memberRepository = memberRepository;
-    }
-
     @Override
-    @Transactional
-    public UserDetails loadUserByUsername(final String email) {
-        return memberRepository.findOneWithAuthoritiesByEmail(email)
-                .map(member -> createMember(email, member))
-                .orElseThrow(() -> new UsernameNotFoundException(email + "데이터베이스에서 찾을 수 없습니다."));
-    }
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-    private org.springframework.security.core.userdetails.User createMember(String email, Member member) {
+        Member userData = memberRepository.findByUsername(username);
 
-        List<GrantedAuthority> grantedAuthorities = member.getAuthorities().stream()
-                .map(authority -> new SimpleGrantedAuthority(authority.getAuthorityName()))
-                .collect(Collectors.toList());
+        if (userData == null) {
+            throw new UsernameNotFoundException("User not found with username: " + username);
+        }
 
-        return new org.springframework.security.core.userdetails.User(member.getEmail(), member.getPassword()
-                , grantedAuthorities);
+        return new CustomUserDetails(userData);
     }
 }

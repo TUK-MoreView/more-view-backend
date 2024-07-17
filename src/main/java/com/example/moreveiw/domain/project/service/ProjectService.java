@@ -1,5 +1,6 @@
 package com.example.moreveiw.domain.project.service;
 
+import com.example.moreveiw.domain.friend.Bean.SmallBean.UserBean.UserGetByEmailSmallBean;
 import com.example.moreveiw.domain.friend.Bean.SmallBean.UserBean.UserGetByIdSmallBean;
 import com.example.moreveiw.domain.image.repository.ImageRepository;
 import com.example.moreveiw.domain.member.model.dao.Member;
@@ -40,6 +41,7 @@ public class ProjectService {
     private final WebsocketService websocketService;
 
     private final ProjectLinkMemberRepository projectLinkMemberRepository;
+    private final UserGetByEmailSmallBean userGetByEmailSmallBean;
 
 
     @Transactional
@@ -59,15 +61,20 @@ public class ProjectService {
         return projectRepository.findByMember(member, pageable);
     }
 
+    public Page<Project> getProjectListByUserEmail(String email, Pageable pageable) {
+        Member member = userGetByEmailSmallBean.exec(email);
+        return projectRepository.findByMember(member, pageable);
+    }
+
     @Transactional
-    public ProjectSingleResponse postProject(ProjectCreateRequest projectCreateRequest) {
-        //setter
+    public ProjectSingleResponse postProject(String email, ProjectCreateRequest projectCreateRequest) {
+        Member member = userGetByEmailSmallBean.exec(email);
         Project project = new Project();
         project.setName(projectCreateRequest.getName());
         project.setRoomId(websocketService.createProjectRoom().getRoomId());
         project.setThumbnailUrl(projectCreateRequest.getThumbnailUrl());
         ProjectLinkMember projectLinkMember = new ProjectLinkMember();
-        projectLinkMember.setMember(userGetByIdSmallBean.exec(projectCreateRequest.getMemberId()));
+        projectLinkMember.setMember(member);
         projectLinkMember.setProject(project);
         projectLinkMemberRepository.save(projectLinkMember);
         projectRepository.save(project);
@@ -78,9 +85,9 @@ public class ProjectService {
                 .thumbnailUrl(project.getThumbnailUrl())
                 .createdAt(project.getCreatedAt())
                 .members(List.of(ProjectSingleResponse.MemberDTO.builder()
-                        .memberId(projectLinkMember.getMember().getId())
-                        .name(projectLinkMember.getMember().getName())
-                        .email(projectLinkMember.getMember().getEmail())
+                        .memberId(member.getId())
+                        .name(member.getUsername())
+                        .email(member.getEmail())
                         .build()))
                 .build();
     }
@@ -101,7 +108,7 @@ public class ProjectService {
                 .members(project.getMembers().stream()
                         .map(member -> ProjectSingleResponse.MemberDTO.builder()
                                 .memberId(member.getMember().getId())
-                                .name(member.getMember().getName())
+                                .name(member.getMember().getUsername())
                                 .email(member.getMember().getEmail())
                                 .build())
                         .toList())

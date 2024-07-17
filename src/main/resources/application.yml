@@ -37,9 +37,7 @@ springdoc:
         disable-swagger-default-url: true
 
 jwt:
-    header: ${JWT_HEADER}
     secret: ${JWT_SECRET}
-    token-validity-in-seconds: 86400
 
 cloud:
     aws:

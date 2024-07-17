@@ -7,12 +7,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class UserGetByEmailSmallBean {
+public class UserGetByUsernameSmallBean {
 
     private final MemberRepository memberRepository;
 
-    public Member exec(String email) {
-        return memberRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("No member with email: " + email));
+    public Member exec(String username) {
+        return memberRepository.findByUsername(username);
     }
 }
