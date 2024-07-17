@@ -30,8 +30,6 @@ public class MemberController {
         AuthRequest request = new AuthRequest(email, username, password);
         authService.signup(request);
         return "회원가입 완료";
-    public ResponseEntity<MemberResponse> signIn(@Valid @RequestBody MemberRequest request) {
-        return ResponseEntity.ok(memberService.signup(request));
     }
 
     @GetMapping("/user")
