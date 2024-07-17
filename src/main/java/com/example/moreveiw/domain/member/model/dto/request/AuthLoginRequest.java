@@ -1,24 +1,18 @@
 package com.example.moreveiw.domain.member.model.dto.request;
 
-import com.example.moreveiw.domain.member.model.dao.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
+@Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class MemberRequest {
-    @Email
+public class AuthLoginRequest {
     @NotBlank
+    @Email
     private String email;
     @NotBlank
     private String password;
-    @NotBlank
-    private String name;
-    private Role role;
 }

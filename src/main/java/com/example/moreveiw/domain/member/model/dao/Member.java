@@ -2,7 +2,6 @@ package com.example.moreveiw.domain.member.model.dao;
 
 import com.example.moreveiw.domain.base.BaseEntity;
 import com.example.moreveiw.domain.friend.Model.DAO.FriendDAO;
-import com.example.moreveiw.domain.project.model.dao.Project;
 import com.example.moreveiw.domain.project.model.dao.ProjectLinkMember;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -14,6 +13,7 @@ import java.util.Set;
 
 @Entity
 @Getter
+@Setter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
