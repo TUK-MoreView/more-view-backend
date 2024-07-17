@@ -79,7 +79,7 @@ public class WebsocketService {
             sendMessage.sendToAllMessage(chatRoom, rectangleService.register(message.getRectangle()));
         } else if (message.getEditType().equals(APIMessage.EditType.editRectangle)) {
             // 사각형 수정
-            rectangleService.editRectangle(message.getRectangle().getId(), RectangleEditor.builder().build());
+            rectangleService.editRectangle(message.getRectangle().getRectangleId(), RectangleEditor.builder().build());
         } else if (message.getDeleteType().equals(APIMessage.DeleteType.deleteRectangle)) {
             // 사각형 삭제
             rectangleService.deleteRectangle(message.getRectangle());
@@ -93,7 +93,7 @@ public class WebsocketService {
             sendMessage.sendToAllMessage(chatRoom, circleService.register(message.getCircle()));
         } else if (message.getEditType().equals(APIMessage.EditType.editCircle)) {
             // 원 수정
-            circleService.editCircle(message.getCircle().getId(), CircleEditor.builder().build());
+            circleService.editCircle(message.getCircle().getCircleId(), CircleEditor.builder().build());
         } else if (message.getDeleteType().equals(APIMessage.DeleteType.deleteCircle)) {
             // 원 삭제
             circleService.deleteCircle(message.getCircle());
@@ -107,7 +107,7 @@ public class WebsocketService {
             sendMessage.sendToAllMessage(chatRoom, lineService.register(message.getLine()));
         } else if (message.getEditType().equals(APIMessage.EditType.editLine)) {
             // 선 수정
-            lineService.editLine(message.getLine().getId(), LineEditor.builder().build());
+            lineService.editLine(message.getLine().getLineId(), LineEditor.builder().build());
         } else if (message.getDeleteType().equals(APIMessage.DeleteType.deleteLine)) {
             // 선 삭제
             lineService.deleteLine(message.getLine());

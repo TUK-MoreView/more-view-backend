@@ -14,14 +14,17 @@ import lombok.NoArgsConstructor;
 public class Text {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long textId;
 
     private Long projectId;
 
-    private String text;
-    private String x;
-    private String y;
 
-    private float size;
+    private String id;
+
+    private String text;
+    private int x;
+    private int y;
+
+    private int size;
     private String color;
 }

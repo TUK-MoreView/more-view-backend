@@ -15,15 +15,24 @@ import lombok.NoArgsConstructor;
 public class ThreeD {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long threeDId;
 
     private Long projectId;
 
+    private String id;
+
+    private String textures;
+    private String urls;
     private String extension;
-    private String idName;
+    private String Name;
     private String bin;
     private String mtl;
     private String obj;
     private String gltf;
 
+    private int x;
+    private int y;
+    private int z;
+
+    private int size;
 }

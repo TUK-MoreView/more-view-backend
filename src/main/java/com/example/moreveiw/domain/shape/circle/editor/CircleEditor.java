@@ -8,31 +8,36 @@ import org.springframework.util.StringUtils;
 @RequiredArgsConstructor
 public class CircleEditor {
 
-    private final double x;
-    private final double y;
+    private final int x;
+    private final int y;
     private final long radiusX;
     private final long radiusY;
     private final String color;
+    private final String id;
+    private final String type;
 
     public static CircleEditor.CircleEditorBuilder builder() { return new CircleEditor.CircleEditorBuilder(); }
 
     public static class CircleEditorBuilder {
 
-        private double x;
-        private double y;
+        private int x;
+        private int y;
         private long radiusX;
         private long radiusY;
         private String color;
+        private String id;
+        private String type;
+
 
         CircleEditorBuilder() {
         }
 
-        public CircleEditor.CircleEditorBuilder x(final double x) {
+        public CircleEditor.CircleEditorBuilder x(final int x) {
             this.x = x;
             return this;
         }
 
-        public CircleEditor.CircleEditorBuilder y(final double y) {
+        public CircleEditor.CircleEditorBuilder y(final int y) {
             this.y = y;
             return this;
         }
@@ -54,8 +59,22 @@ public class CircleEditor {
             return this;
         }
 
+        public CircleEditor.CircleEditorBuilder id(final String id) {
+            if (StringUtils.hasText(id)) {
+                this.id = id;
+            }
+            return this;
+        }
+
+        public CircleEditor.CircleEditorBuilder type(final String type) {
+            if (StringUtils.hasText(type)) {
+                this.type = type;
+            }
+            return this;
+        }
+
         public CircleEditor build() {
-            return new CircleEditor(x, y, radiusX, radiusY, color);
+            return new CircleEditor(x, y,  radiusX, radiusY, color, id, type);
         }
     }
 }

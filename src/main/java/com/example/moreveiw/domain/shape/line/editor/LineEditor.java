@@ -7,32 +7,26 @@ import org.springframework.util.StringUtils;
 @Getter
 @RequiredArgsConstructor
 public class LineEditor {
-    
-    private final double x;
-    private final double y;
-    private final int strokeWidth;
-    private final String color;
 
-    public static LineEditorBuilder builder() { return new LineEditorBuilder(); }
+    private final int strokeWidth;
+    private final String stroke;
+    private final String type;
+    private final String id;
+    private final int[] points;
+
+    public static LineEditorBuilder builder() {
+        return new LineEditorBuilder();
+    }
 
     public static class LineEditorBuilder {
 
-        private double x;
-        private double y;
         private int strokeWidth;
-        private String color;
+        private String stroke;
+        private String type;
+        private String id;
+        private int[] points = new int[4];
 
         LineEditorBuilder() {
-        }
-
-        public LineEditorBuilder x(final double x) {
-            this.x = x;
-            return this;
-        }
-
-        public LineEditorBuilder y(final double y) {
-            this.y = y;
-            return this;
         }
 
         public LineEditorBuilder strokeWidth(final int strokeWidth) {
@@ -40,15 +34,37 @@ public class LineEditor {
             return this;
         }
 
-        public LineEditor.LineEditorBuilder color(final String color) {
-            if (StringUtils.hasText(color)) {
-                this.color = color;
+        public LineEditorBuilder stroke(final String stroke) {
+            if (StringUtils.hasText(stroke)) {
+                this.stroke = stroke;
             }
             return this;
         }
 
+        public LineEditorBuilder type(final String type) {
+            if (StringUtils.hasText(type)) {
+                this.type = type;
+            }
+            return this;
+        }
+
+        public LineEditorBuilder id(final String id) {
+            if (StringUtils.hasText(id)) {
+                this.id = id;
+            }
+            return this;
+        }
+
+        public LineEditorBuilder points(final int[] points) {
+            if (points != null) {
+                this.points = points;
+            }
+            return this;
+        }
+
+
         public LineEditor build() {
-            return new LineEditor(x, y, strokeWidth, color);
+            return new LineEditor(strokeWidth, stroke, type, id, points);
         }
     }
 }
