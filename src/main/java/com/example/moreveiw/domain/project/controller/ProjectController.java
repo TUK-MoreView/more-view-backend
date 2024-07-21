@@ -1,5 +1,7 @@
 package com.example.moreveiw.domain.project.controller;
 
+import java.util.stream.Collectors;
+
 import com.example.moreveiw.domain.project.constant.ProjectResponseConstant;
 import com.example.moreveiw.domain.project.model.dao.Project;
 import com.example.moreveiw.domain.project.model.dto.request.PostProjectMemberRequest;
@@ -23,8 +25,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.stream.Collectors;
 
 @Tag(name = "Project Controller", description = "프로젝트 관련 API입니다.")
 @RestController
