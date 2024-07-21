@@ -10,5 +10,4 @@ import lombok.*;
 public class TokenDto {
 
     private String token;
-    private Long memberId;
 }
