@@ -6,13 +6,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ProjectRepository extends JpaRepository<Project, Long> {
 
     @Query("SELECT p FROM Project p JOIN ProjectLinkMember plm ON p.id = plm.project.id WHERE plm.member = :member")
-    Page<Project> findByMember(Member member, Pageable pageable);
+    Page<Project> findByMember(@Param("member") Member member, Pageable pageable);
 
     Project findByRoomId(String roomId);
 }
