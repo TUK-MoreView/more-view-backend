@@ -47,7 +47,7 @@ public class ProjectController {
                                     value = ProjectResponseConstant.getProjectList,
                                     description = "프로젝트 목록이 조회되었습니다."
                             )))})
-    @GetMapping("/project/{memberId}")
+    @GetMapping("/project/member/{memberId}")
     public ResponseEntity<ProjectPaging> getProjectList(@Parameter(description = "페이지 번호 (0부터 시작, 기본값 0)", example = "0")
                                                         @PathVariable(value = "memberId") Long memberId,
                                                         @RequestParam(value = "page", required = false, defaultValue = "0") final int page) {
