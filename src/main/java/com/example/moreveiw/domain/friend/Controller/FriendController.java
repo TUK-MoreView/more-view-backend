@@ -8,6 +8,7 @@ import com.example.moreveiw.domain.friend.Model.ENUM.FriendSort;
 import com.example.moreveiw.domain.friend.Service.FriendService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @CrossOrigin("*")
 @RequestMapping("/api")
+@Tag(name = "friend Controller", description = "수정 중.")
 public class FriendController {
 
     private final FriendService friendService;
