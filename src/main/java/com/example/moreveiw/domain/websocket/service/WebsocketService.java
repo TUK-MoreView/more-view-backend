@@ -27,6 +27,14 @@ import java.util.UUID;
 @Slf4j
 public class WebsocketService {
 
+    private final ImageService imageService;
+    private final TextService textService;
+    private final RectangleService rectangleService;
+    private final CircleService circleService;
+    private final LineService lineService;
+    private final SendMessage sendMessage;
+    private final ThreeDService threeDService;
+
     // repository 대신 사용
     private Map<String, ProjectRoom> projectRooms;
 
@@ -60,21 +68,30 @@ public class WebsocketService {
         });
     }
 
+    // roomId로 세션 추가
+    public void addSessionToRoom(String roomId, WebSocketSession session) {
+        ProjectRoom projectRoom = findOrCreateProjectRoom(roomId);
+        if (projectRoom != null) {
+            // 기존 세션 중 닫힌 세션 제거
+            projectRoom.getSessions().removeIf(s -> !s.isOpen());
+            projectRoom.getSessions().add(session);
+        }
+    }
 
-    private final ImageService imageService;
-    private final TextService textService;
-    private final RectangleService rectangleService;
-    private final CircleService circleService;
-    private final LineService lineService;
-    private final SendMessage sendMessage;
-    private final ThreeDService threeDService;
-
+    // roomId로 세션 제거
+    public void removeSessionFromRoom(String roomId, WebSocketSession session) {
+        ProjectRoom projectRoom = findOrCreateProjectRoom(roomId);
+        if (projectRoom != null) {
+            projectRoom.getSessions().remove(session);
+        }
+    }
 
     // MessageType에 따라 로직 실행
     public void handleMessage(ProjectRoom chatRoom, APIMessage message, WebSocketSession session) {
         if (message.getSaveType().equals(APIMessage.SaveType.enter)) {
             // 채팅방에 session추가
-            chatRoom.getSessions().add(session);
+            addSessionToRoom(chatRoom.getRoomId(), session);
+//            chatRoom.getSessions().add(session);
             sendMessage.sendToAllMessage(chatRoom, "새로운 사용자가 입장했습니다.");
         }
 
