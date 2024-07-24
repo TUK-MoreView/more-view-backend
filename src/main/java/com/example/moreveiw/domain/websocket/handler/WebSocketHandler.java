@@ -32,8 +32,8 @@ public class WebSocketHandler extends TextWebSocketHandler {
         // UUID 가져오기
         roomId = chatMessage.getRoomId();
 
-        // CharRoom 찾기
-        chatRoom = chatService.findProjectRoom(roomId);
+        // CharRoom 찾기 또는 생성
+        ProjectRoom chatRoom = chatService.findOrCreateProjectRoom(roomId);
 
         // 로직 실행
         chatService.handleMessage(chatRoom, chatMessage,session);

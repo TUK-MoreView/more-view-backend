@@ -49,9 +49,15 @@ public class WebsocketService {
         return projectRoom;
     }
 
-    // roomId로 채팅방 찾기
-    public ProjectRoom findProjectRoom(String roomId) {
-        return projectRooms.get(roomId);
+    // roomId로 채팅방 찾기 또는 생성
+    public ProjectRoom findOrCreateProjectRoom(String roomId) {
+        return projectRooms.computeIfAbsent(roomId, id -> {
+            // ProjectRoom을 찾지 못한 경우 새 객체를 생성
+            ProjectRoom newRoom = ProjectRoom.builder()
+                    .roomId(id)
+                    .build();
+            return newRoom;
+        });
     }
 
 
