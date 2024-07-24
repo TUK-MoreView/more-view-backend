@@ -1,5 +1,6 @@
 package com.example.moreveiw.domain.websocket.service;
 
+import com.example.moreveiw.domain.image.model.dao.Image;
 import com.example.moreveiw.domain.image.service.ImageService;
 import com.example.moreveiw.domain.shape.circle.editor.CircleEditor;
 import com.example.moreveiw.domain.shape.circle.service.CircleService;
@@ -140,8 +141,10 @@ public class WebsocketService {
 
         /* -------------------------------------------- image -------------------------------------------- */
         else if (message.getSaveType().equals(APIMessage.SaveType.saveImage)) {
-            // 이미지 저장
-            sendMessage.sendToAllMessage(chatRoom, imageService.saveImage(message.getImage()));
+            // 이미지 생성 후 저장
+            Image image = imageService.createImage(message);
+            Image savedImage = imageService.saveImage(image);
+            sendMessage.sendToAllMessage(chatRoom, savedImage);
         } else if (message.getDeleteType().equals(APIMessage.DeleteType.deleteImage)) {
             // 이미지 삭제
             imageService.deleteImage(message.getImage());
