@@ -7,9 +7,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Component
 @RequiredArgsConstructor
@@ -20,6 +24,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
     private final ObjectMapper objectMapper;
     private String roomId;
     private ProjectRoom chatRoom;
+    private Set<WebSocketSession> sessions = new HashSet<>();
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
@@ -32,10 +37,26 @@ public class WebSocketHandler extends TextWebSocketHandler {
         // UUID 가져오기
         roomId = chatMessage.getRoomId();
 
-        // CharRoom 찾기
-        chatRoom = chatService.findProjectRoom(roomId);
+        // CharRoom 찾기 또는 생성
+        ProjectRoom chatRoom = chatService.findOrCreateProjectRoom(roomId);
 
         // 로직 실행
         chatService.handleMessage(chatRoom, chatMessage,session);
+    }
+
+    @Override
+    public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+        sessions.add(session);
+        if (roomId != null) {
+            chatService.addSessionToRoom(roomId, session);
+        }
+    }
+
+    @Override
+    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+        sessions.remove(session);
+        if (roomId != null) {
+            chatService.removeSessionFromRoom(roomId, session);
+        }
     }
 }

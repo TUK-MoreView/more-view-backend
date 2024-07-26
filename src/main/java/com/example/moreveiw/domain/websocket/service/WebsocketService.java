@@ -1,5 +1,6 @@
 package com.example.moreveiw.domain.websocket.service;
 
+import com.example.moreveiw.domain.image.model.dao.Image;
 import com.example.moreveiw.domain.image.service.ImageService;
 import com.example.moreveiw.domain.shape.circle.editor.CircleEditor;
 import com.example.moreveiw.domain.shape.circle.service.CircleService;
@@ -27,6 +28,14 @@ import java.util.UUID;
 @Slf4j
 public class WebsocketService {
 
+    private final ImageService imageService;
+    private final TextService textService;
+    private final RectangleService rectangleService;
+    private final CircleService circleService;
+    private final LineService lineService;
+    private final SendMessage sendMessage;
+    private final ThreeDService threeDService;
+
     // repository 대신 사용
     private Map<String, ProjectRoom> projectRooms;
 
@@ -49,26 +58,41 @@ public class WebsocketService {
         return projectRoom;
     }
 
-    // roomId로 채팅방 찾기
-    public ProjectRoom findProjectRoom(String roomId) {
-        return projectRooms.get(roomId);
+    // roomId로 채팅방 찾기 또는 생성
+    public ProjectRoom findOrCreateProjectRoom(String roomId) {
+        return projectRooms.computeIfAbsent(roomId, id -> {
+            // ProjectRoom을 찾지 못한 경우 새 객체를 생성
+            ProjectRoom newRoom = ProjectRoom.builder()
+                    .roomId(id)
+                    .build();
+            return newRoom;
+        });
     }
 
+    // roomId로 세션 추가
+    public void addSessionToRoom(String roomId, WebSocketSession session) {
+        ProjectRoom projectRoom = findOrCreateProjectRoom(roomId);
+        if (projectRoom != null) {
+            // 기존 세션 중 닫힌 세션 제거
+            projectRoom.getSessions().removeIf(s -> !s.isOpen());
+            projectRoom.getSessions().add(session);
+        }
+    }
 
-    private final ImageService imageService;
-    private final TextService textService;
-    private final RectangleService rectangleService;
-    private final CircleService circleService;
-    private final LineService lineService;
-    private final SendMessage sendMessage;
-    private final ThreeDService threeDService;
-
+    // roomId로 세션 제거
+    public void removeSessionFromRoom(String roomId, WebSocketSession session) {
+        ProjectRoom projectRoom = findOrCreateProjectRoom(roomId);
+        if (projectRoom != null) {
+            projectRoom.getSessions().remove(session);
+        }
+    }
 
     // MessageType에 따라 로직 실행
     public void handleMessage(ProjectRoom chatRoom, APIMessage message, WebSocketSession session) {
         if (message.getSaveType().equals(APIMessage.SaveType.enter)) {
             // 채팅방에 session추가
-            chatRoom.getSessions().add(session);
+            addSessionToRoom(chatRoom.getRoomId(), session);
+//            chatRoom.getSessions().add(session);
             sendMessage.sendToAllMessage(chatRoom, "새로운 사용자가 입장했습니다.");
         }
 
@@ -117,8 +141,10 @@ public class WebsocketService {
 
         /* -------------------------------------------- image -------------------------------------------- */
         else if (message.getSaveType().equals(APIMessage.SaveType.saveImage)) {
-            // 이미지 저장
-            sendMessage.sendToAllMessage(chatRoom, imageService.saveImage(message.getImage()));
+            // 이미지 생성 후 저장
+            Image image = imageService.createImage(message);
+            Image savedImage = imageService.saveImage(image);
+            sendMessage.sendToAllMessage(chatRoom, savedImage);
         } else if (message.getDeleteType().equals(APIMessage.DeleteType.deleteImage)) {
             // 이미지 삭제
             imageService.deleteImage(message.getImage());
