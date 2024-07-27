@@ -26,7 +26,7 @@ https://github.com/TUK-MoreView/more-view-web
 <br>
 
 ## 📃 API
-http://54.174.122.35:8080/swagger-ui/index.html
+[http://54.174.122.35:8080/swagger-ui/index.html](http://52.91.83.63:8080/swagger-ui/index.html)
 <br>
 
 ## ➡️️ Flowchart
