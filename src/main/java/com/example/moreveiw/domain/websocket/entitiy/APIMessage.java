@@ -12,18 +12,33 @@ import lombok.Getter;
 public class APIMessage {
 
     public enum SaveType {
-        enter, saveImage, saveText, saveRectangle, saveCircle, saveLine, save3DData
+        enter,
+        saveImage,
+        saveText,
+        saveRectangle,
+        saveCircle,
+        saveLine,
+        save3DData
     }
 
     public enum EditType {
-        enter, editImage, editText, editRectangle, editCircle, editLine
+        enter,
+        editImage,
+        editText,
+        editRectangle,
+        editCircle,
+        editLine
     }
 
     public enum DeleteType {
-        enter, deleteImage, deleteText, deleteRectangle, deleteCircle, deleteLine, delete3DData
-
+        enter,
+        deleteImage,
+        deleteText,
+        deleteRectangle,
+        deleteCircle,
+        deleteLine,
+        delete3DData
     }
-
 
     private SaveType saveType;
     private EditType editType;

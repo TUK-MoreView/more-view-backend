@@ -16,6 +16,7 @@ public class ImageService {
     }
 
     public void deleteImage(Image image) {
+        System.out.println("image.getImageId() = " + image.getImageId());
         imageRepository.deleteById(image.getImageId());
     }
 
@@ -33,7 +34,8 @@ public class ImageService {
 
     public Image createImageForDeletion(APIMessage message) {
         return Image.builder()
-                .imageId(Long.parseLong(message.getImage().getId()))
+                .imageId(message.getImage().getImageId())
                 .build();
     }
 }
+

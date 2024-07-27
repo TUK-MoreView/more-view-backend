@@ -30,6 +30,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
 
         String payload = message.getPayload();
+        System.out.println("payload = " + payload);
 
         // 메시지를 APIMessage 객체로 변환
         APIMessage chatMessage = objectMapper.readValue(payload, APIMessage.class);
@@ -41,7 +42,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
         ProjectRoom chatRoom = chatService.findOrCreateProjectRoom(roomId);
 
         // 로직 실행
-        chatService.handleMessage(chatRoom, chatMessage,session);
+        chatService.handleMessage(chatRoom, chatMessage, session);
     }
 
     @Override
