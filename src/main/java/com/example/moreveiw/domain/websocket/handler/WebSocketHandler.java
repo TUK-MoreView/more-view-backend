@@ -30,7 +30,6 @@ public class WebSocketHandler extends TextWebSocketHandler {
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
 
         String payload = message.getPayload();
-        System.out.println("payload = " + payload);
 
         // 메시지를 APIMessage 객체로 변환
         APIMessage chatMessage = objectMapper.readValue(payload, APIMessage.class);

@@ -89,10 +89,6 @@ public class WebsocketService {
 
     // MessageType에 따라 로직 실행
     public void handleMessage(ProjectRoom chatRoom, APIMessage message, WebSocketSession session) {
-        System.out.println("message.getSaveType() = " + message.getSaveType());
-        System.out.println("message.getEditType() = " + message.getEditType());
-        System.out.println("message.getDeleteType() = " + message.getDeleteType());
-
         if (message.getSaveType().equals(APIMessage.SaveType.enter)
                 && (message.getEditType() == null)
                 && (message.getDeleteType() == null)) {
@@ -108,13 +104,9 @@ public class WebsocketService {
             Image image = imageService.createImage(message);
             Image savedImage = imageService.saveImage(image);
             sendMessage.sendToAllMessage(chatRoom, savedImage);
-        }
-
-        else if (message.getDeleteType().equals(APIMessage.DeleteType.deleteImage)) {
+        } else if (message.getDeleteType().equals(APIMessage.DeleteType.deleteImage)) {
             // 이미지 삭제
             Image image = imageService.createImageForDeletion(message);
-
-            System.out.println("image.getImageId() = " + image.getImageId());
             imageService.deleteImage(image);
             sendMessage.sendToAllMessage(chatRoom, "이미지가 삭제되었습니다.");
         }

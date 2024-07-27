@@ -16,7 +16,6 @@ public class ImageService {
     }
 
     public void deleteImage(Image image) {
-        System.out.println("image.getImageId() = " + image.getImageId());
         imageRepository.deleteById(image.getImageId());
     }
 
