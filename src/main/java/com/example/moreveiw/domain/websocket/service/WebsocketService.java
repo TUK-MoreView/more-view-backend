@@ -89,11 +89,26 @@ public class WebsocketService {
 
     // MessageType에 따라 로직 실행
     public void handleMessage(ProjectRoom chatRoom, APIMessage message, WebSocketSession session) {
-        if (message.getSaveType().equals(APIMessage.SaveType.enter)) {
+        if (message.getSaveType().equals(APIMessage.SaveType.enter)
+                && (message.getEditType() == null)
+                && (message.getDeleteType() == null)) {
             // 채팅방에 session추가
             addSessionToRoom(chatRoom.getRoomId(), session);
-//            chatRoom.getSessions().add(session);
             sendMessage.sendToAllMessage(chatRoom, "새로운 사용자가 입장했습니다.");
+        }
+
+
+        /* -------------------------------------------- image -------------------------------------------- */
+        else if (message.getSaveType().equals(APIMessage.SaveType.saveImage)) {
+            // 이미지 생성 후 저장
+            Image image = imageService.createImage(message);
+            Image savedImage = imageService.saveImage(image);
+            sendMessage.sendToAllMessage(chatRoom, savedImage);
+        } else if (message.getDeleteType().equals(APIMessage.DeleteType.deleteImage)) {
+            // 이미지 삭제
+            Image image = imageService.createImageForDeletion(message);
+            imageService.deleteImage(image);
+            sendMessage.sendToAllMessage(chatRoom, "이미지가 삭제되었습니다.");
         }
 
 
@@ -136,19 +151,6 @@ public class WebsocketService {
             // 선 삭제
             lineService.deleteLine(message.getLine());
             sendMessage.sendToAllMessage(chatRoom, "선이 삭제되었습니다.");
-        }
-
-
-        /* -------------------------------------------- image -------------------------------------------- */
-        else if (message.getSaveType().equals(APIMessage.SaveType.saveImage)) {
-            // 이미지 생성 후 저장
-            Image image = imageService.createImage(message);
-            Image savedImage = imageService.saveImage(image);
-            sendMessage.sendToAllMessage(chatRoom, savedImage);
-        } else if (message.getDeleteType().equals(APIMessage.DeleteType.deleteImage)) {
-            // 이미지 삭제
-            imageService.deleteImage(message.getImage());
-            sendMessage.sendToAllMessage(chatRoom, "이미지가 삭제되었습니다.");
         }
 
 

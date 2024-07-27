@@ -41,7 +41,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
         ProjectRoom chatRoom = chatService.findOrCreateProjectRoom(roomId);
 
         // 로직 실행
-        chatService.handleMessage(chatRoom, chatMessage,session);
+        chatService.handleMessage(chatRoom, chatMessage, session);
     }
 
     @Override
