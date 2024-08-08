@@ -15,4 +15,5 @@ public class MemberLoginRequest {
     private String email;
     @NotBlank
     private String password;
+    private Long memberId;
 }
