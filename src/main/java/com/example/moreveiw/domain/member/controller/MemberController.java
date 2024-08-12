@@ -48,12 +48,15 @@ public class MemberController {
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
+        Long memberId = memberService.findMemberIdByEmail(request.getEmail());
+
         String jwt = tokenProvider.createToken(authentication);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
 
-        TokenDto tokenDto = new TokenDto(jwt, request.getMemberId());
+
+        TokenDto tokenDto = new TokenDto(jwt, memberId);
 
         return new ResponseEntity<>(tokenDto, httpHeaders, HttpStatus.OK);
     }

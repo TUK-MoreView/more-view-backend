@@ -9,6 +9,7 @@ import com.example.moreveiw.domain.member.model.dto.response.MemberResponse;
 import com.example.moreveiw.domain.member.repository.MemberRepository;
 import com.example.moreveiw.global.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,5 +52,10 @@ public class MemberService {
                 .orElseThrow(() -> new NotFoundMemberException("해당 이메일의 회원을 찾을 수 없습니다."));
     }
 
+    public Long findMemberIdByEmail(String email) {
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("No member found with email: " + email));
+        return member.getId();
+    }
 
 }
