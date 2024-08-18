@@ -21,6 +21,8 @@ public class Line {
 
     private Long projectId;
 
+    private Long pageId;
+
     private String id;
 
     private int[] points = new int[4];

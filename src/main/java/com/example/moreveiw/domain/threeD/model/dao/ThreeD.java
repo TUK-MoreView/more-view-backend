@@ -19,6 +19,8 @@ public class ThreeD {
 
     private Long projectId;
 
+    private Long pageId;
+
     private String id;
 
     private String textures;
