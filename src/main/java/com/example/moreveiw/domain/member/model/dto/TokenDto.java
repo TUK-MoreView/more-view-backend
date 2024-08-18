@@ -11,4 +11,6 @@ public class TokenDto {
 
     private String token;
     private Long memberId;
+    private String name;
+    private String email;
 }
