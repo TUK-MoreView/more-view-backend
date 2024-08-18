@@ -18,7 +18,7 @@ public class Image {
     private Long imageId;
 
     private Long projectId;
-
+    private Long pageId;
 
     private String id;
     private String imageUri;

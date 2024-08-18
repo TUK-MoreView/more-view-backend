@@ -21,6 +21,8 @@ public class Rectangle {
 
     private Long projectId;
 
+    private Long pageId;
+
     private String id;
     private int x;
     private int y;

@@ -17,7 +17,7 @@ public class Text {
     private Long textId;
 
     private Long projectId;
-
+    private Long pageId;
 
     private String id;
 
