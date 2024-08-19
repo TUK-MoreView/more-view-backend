@@ -1,5 +1,6 @@
 package com.example.moreveiw.domain.member.controller;
 
+import com.example.moreveiw.domain.member.model.dao.Member;
 import com.example.moreveiw.domain.member.model.dto.TokenDto;
 import com.example.moreveiw.domain.member.model.dto.request.MemberLoginRequest;
 import com.example.moreveiw.domain.member.model.dto.request.MemberRequest;
@@ -20,6 +21,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -48,15 +50,15 @@ public class MemberController {
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        Long memberId = memberService.findMemberIdByEmail(request.getEmail());
+        Member member = memberService.findByEmailOptional(request.getEmail())
+                .orElseThrow(() -> new UsernameNotFoundException("No member found with email: " + request.getEmail()));
 
         String jwt = tokenProvider.createToken(authentication);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
 
-
-        TokenDto tokenDto = new TokenDto(jwt, memberId);
+        TokenDto tokenDto = new TokenDto(jwt, member.getId(), member.getName(), member.getEmail());
 
         return new ResponseEntity<>(tokenDto, httpHeaders, HttpStatus.OK);
     }
