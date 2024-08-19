@@ -21,9 +21,9 @@ public class GetReceivedFriendRequests {
 
         return friendRequestDAOS.stream()
                 .map(friendRequestDAO -> FriendRequestListResponseDTO.builder()
-                        .friendId(friendRequestDAO.getId())
-                        .friendEmail(userGetByIdSmallBean.exec(friendRequestDAO.getId()).getEmail())
-                        .friendName(userGetByIdSmallBean.exec(friendRequestDAO.getId()).getName())
+                        .friendId(friendRequestDAO.getFriendId())
+                        .friendEmail(userGetByIdSmallBean.exec(friendRequestDAO.getFriendId()).getEmail())
+                        .friendName(userGetByIdSmallBean.exec(friendRequestDAO.getFriendId()).getName())
                         .friendStatus(friendRequestDAO.getState())
                         .createdAt(friendRequestDAO.getCreatedAt())
                         .build())
