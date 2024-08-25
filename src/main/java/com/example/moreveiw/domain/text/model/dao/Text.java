@@ -1,14 +1,12 @@
 package com.example.moreveiw.domain.text.model.dao;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Table(name = "text")
 @Getter
 @Builder
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Text {
@@ -21,6 +19,7 @@ public class Text {
 
     private String id;
 
+    private String crudType;
     private String text;
     private int x;
     private int y;

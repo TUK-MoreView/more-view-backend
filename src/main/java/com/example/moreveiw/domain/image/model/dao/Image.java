@@ -1,15 +1,13 @@
 package com.example.moreveiw.domain.image.model.dao;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Table(name = "image")
 @Getter
 @Builder
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Image {
@@ -20,6 +18,7 @@ public class Image {
     private Long projectId;
     private Long pageId;
 
+    private String crudType;
     private String id;
     private String imageUri;
     private int x;

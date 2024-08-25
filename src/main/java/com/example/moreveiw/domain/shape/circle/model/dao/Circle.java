@@ -2,14 +2,12 @@ package com.example.moreveiw.domain.shape.circle.model.dao;
 
 import com.example.moreveiw.domain.shape.circle.editor.CircleEditor;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Table(name = "circle")
 @Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -23,6 +21,7 @@ public class Circle {
 
     private Long pageId;
 
+    private String crudType;
     private String id;
     private int x;
     private int y;

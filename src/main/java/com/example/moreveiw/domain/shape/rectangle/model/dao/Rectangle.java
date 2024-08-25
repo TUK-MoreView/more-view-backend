@@ -2,15 +2,13 @@ package com.example.moreveiw.domain.shape.rectangle.model.dao;
 
 import com.example.moreveiw.domain.shape.rectangle.editor.RectangleEditor;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Table(name = "rectangle")
 @Getter
 @Builder
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Rectangle {
@@ -23,6 +21,7 @@ public class Rectangle {
 
     private Long pageId;
 
+    private String crudType;
     private String id;
     private int x;
     private int y;
