@@ -1,5 +1,10 @@
 package com.example.moreveiw.domain.websocket.service;
-
+import com.example.moreveiw.domain.shape.circle.model.dao.Circle;
+import com.example.moreveiw.domain.shape.line.model.dao.Line;
+import com.example.moreveiw.domain.shape.rectangle.model.dao.Rectangle;
+import com.example.moreveiw.domain.text.model.dao.Text;
+import com.example.moreveiw.domain.threeD.model.dao.ThreeD;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.example.moreveiw.domain.image.model.dao.Image;
 import com.example.moreveiw.domain.image.service.ImageService;
 import com.example.moreveiw.domain.shape.circle.editor.CircleEditor;
@@ -103,76 +108,126 @@ public class WebsocketService {
             // 이미지 생성 후 저장
             Image image = imageService.createImage(message);
             Image savedImage = imageService.saveImage(image);
+            if(image.getImageId()==null){
+                savedImage.setCrudType("create");
+            }
+            else{
+                savedImage.setCrudType("update");
+            }
             sendMessage.sendToAllMessage(chatRoom, savedImage);
         } else if (message.getDeleteType().equals(APIMessage.DeleteType.deleteImage)) {
             // 이미지 삭제
             Image image = imageService.createImageForDeletion(message);
             imageService.deleteImage(image);
-            sendMessage.sendToAllMessage(chatRoom, "이미지가 삭제되었습니다.");
+            Image deletedImage = new Image();
+            deletedImage.setId(image.getId());
+            deletedImage.setCrudType("delete");
+            sendMessage.sendToAllMessage(chatRoom, deletedImage);
         }
 
 
         /* -------------------------------------------- Rectangle -------------------------------------------- */
         else if (message.getSaveType().equals(APIMessage.SaveType.saveRectangle)) {
             // 사각형 저장
-            sendMessage.sendToAllMessage(chatRoom, rectangleService.register(message.getRectangle()));
+            Rectangle rectangle = rectangleService.register(message.getRectangle());
+            rectangle.setCrudType("create");
+            sendMessage.sendToAllMessage(chatRoom, rectangle);
         } else if (message.getEditType().equals(APIMessage.EditType.editRectangle)) {
             // 사각형 수정
-            rectangleService.editRectangle(message.getRectangle().getRectangleId(), RectangleEditor.builder().build());
+            Rectangle rectangle = rectangleService.editRectangle(message.getRectangle().getRectangleId(), RectangleEditor.builder().build());
+            rectangle.setCrudType("update");
+            sendMessage.sendToAllMessage(chatRoom, rectangle);
         } else if (message.getDeleteType().equals(APIMessage.DeleteType.deleteRectangle)) {
             // 사각형 삭제
             rectangleService.deleteRectangle(message.getRectangle());
-            sendMessage.sendToAllMessage(chatRoom, "사각형이 삭제되었습니다.");
+            Rectangle deletedRectangle = new Rectangle();
+            deletedRectangle.setId(message.getRectangle().getId());
+            deletedRectangle.setCrudType("delete");
+            sendMessage.sendToAllMessage(chatRoom, deletedRectangle);
         }
 
 
         /* -------------------------------------------- Circle -------------------------------------------- */
         else if (message.getSaveType().equals(APIMessage.SaveType.saveCircle)) {
             // 원 저장
-            sendMessage.sendToAllMessage(chatRoom, circleService.register(message.getCircle()));
+            Circle circle = circleService.register(message.getCircle());
+            circle.setCrudType("create");
+            sendMessage.sendToAllMessage(chatRoom, circle);
         } else if (message.getEditType().equals(APIMessage.EditType.editCircle)) {
             // 원 수정
-            circleService.editCircle(message.getCircle().getCircleId(), CircleEditor.builder().build());
+            Circle circle = circleService.editCircle(message.getCircle().getCircleId(), CircleEditor.builder().build());
+            circle.setCrudType("update");
+            sendMessage.sendToAllMessage(chatRoom, circle);
         } else if (message.getDeleteType().equals(APIMessage.DeleteType.deleteCircle)) {
             // 원 삭제
             circleService.deleteCircle(message.getCircle());
-            sendMessage.sendToAllMessage(chatRoom, "원이 삭제되었습니다.");
+            Circle deletedCircle = new Circle();
+            deletedCircle.setId(message.getCircle().getId());
+            deletedCircle.setCrudType("delete");
+            sendMessage.sendToAllMessage(chatRoom, deletedCircle);
         }
 
 
         /* -------------------------------------------- Line -------------------------------------------- */
         else if (message.getSaveType().equals(APIMessage.SaveType.saveLine)) {
             // 선 저장
-            sendMessage.sendToAllMessage(chatRoom, lineService.register(message.getLine()));
+            Line line = lineService.register(message.getLine());
+            line.setCrudType("create");
+            sendMessage.sendToAllMessage(chatRoom, line);
         } else if (message.getEditType().equals(APIMessage.EditType.editLine)) {
             // 선 수정
-            lineService.editLine(message.getLine().getLineId(), LineEditor.builder().build());
+            Line line = lineService.editLine(message.getLine().getLineId(), LineEditor.builder().build());
+            line.setCrudType("update");
+            sendMessage.sendToAllMessage(chatRoom, line);
         } else if (message.getDeleteType().equals(APIMessage.DeleteType.deleteLine)) {
             // 선 삭제
             lineService.deleteLine(message.getLine());
-            sendMessage.sendToAllMessage(chatRoom, "선이 삭제되었습니다.");
+            Line deletedLine = new Line();
+            deletedLine.setId(message.getLine().getId());
+            deletedLine.setCrudType("delete");
+            sendMessage.sendToAllMessage(chatRoom, deletedLine);
         }
 
 
         /* -------------------------------------------- Text -------------------------------------------- */
         else if (message.getSaveType().equals(APIMessage.SaveType.saveText)) {
             // 텍스트 저장
-            sendMessage.sendToAllMessage(chatRoom, textService.saveText(message.getText()));
+            Text text = textService.saveText(message.getText());
+            if(text.getTextId()==null){
+                text.setCrudType("create");
+            }
+            else{
+                text.setCrudType("update");
+            }
+            sendMessage.sendToAllMessage(chatRoom, text);
         } else if (message.getDeleteType().equals(APIMessage.DeleteType.deleteText)) {
             // 텍스트 삭제
             textService.deleteText(message.getText());
-            sendMessage.sendToAllMessage(chatRoom, "텍스트가 삭제되었습니다.");
+            Text deletedText = new Text();
+            deletedText.setId(message.getText().getId());
+            deletedText.setCrudType("delete");
+            sendMessage.sendToAllMessage(chatRoom, deletedText);
         }
 
 
         /* -------------------------------------------- ThreeD -------------------------------------------- */
         else if (message.getSaveType().equals(APIMessage.SaveType.save3DData)) {
             // 3D 데이터 저장
-            sendMessage.sendToAllMessage(chatRoom, threeDService.saveThreeD(message.getThreeD()));
+            ThreeD threeD = threeDService.saveThreeD(message.getThreeD());
+            if(threeD.getThreeDId()==null){
+                threeD.setCrudType("create");
+            }
+            else{
+                threeD.setCrudType("update");
+            }
+            sendMessage.sendToAllMessage(chatRoom, threeD);
         } else if (message.getDeleteType().equals(APIMessage.DeleteType.delete3DData)) {
             // 3D 데이터 삭제
             threeDService.deleteThreeD(message.getThreeD());
-            sendMessage.sendToAllMessage(chatRoom, "3D 데이터가 삭제되었습니다.");
+            ThreeD deletedThreeD = new ThreeD();
+            deletedThreeD.setId(message.getThreeD().getId());
+            deletedThreeD.setCrudType("delete");
+            sendMessage.sendToAllMessage(chatRoom, deletedThreeD);
         }
     }
 }

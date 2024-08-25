@@ -1,15 +1,13 @@
 package com.example.moreveiw.domain.threeD.model.dao;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Table(name = "3D")
 @Getter
 @Builder
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class ThreeD {
@@ -23,6 +21,7 @@ public class ThreeD {
 
     private String id;
 
+    private String crudType;
     private String textures;
     private String urls;
     private String extension;

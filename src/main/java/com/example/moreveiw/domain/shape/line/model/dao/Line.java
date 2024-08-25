@@ -2,15 +2,13 @@ package com.example.moreveiw.domain.shape.line.model.dao;
 
 import com.example.moreveiw.domain.shape.line.editor.LineEditor;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Table(name = "line")
 @Getter
 @Builder
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Line {
@@ -23,6 +21,7 @@ public class Line {
 
     private Long pageId;
 
+    private String crudType;
     private String id;
 
     private int[] points = new int[4];
