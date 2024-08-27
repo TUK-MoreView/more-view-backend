@@ -135,7 +135,17 @@ public class WebsocketService {
             sendMessage.sendToAllMessage(chatRoom, rectangle);
         } else if (message.getEditType().equals(APIMessage.EditType.editRectangle)) {
             // 사각형 수정
-            Rectangle rectangle = rectangleService.editRectangle(message.getRectangle().getRectangleId(), RectangleEditor.builder().build());
+            RectangleEditor editor = RectangleEditor.builder()
+                    .x(message.getRectangle().getX())
+                    .y(message.getRectangle().getY())
+                    .width(message.getRectangle().getWidth())
+                    .height(message.getRectangle().getHeight())
+                    .color(message.getRectangle().getFill())
+                    .id(message.getRectangle().getId())
+                    .type(message.getRectangle().getType())
+                    .build();
+
+            Rectangle rectangle = rectangleService.editRectangle(message.getRectangle().getRectangleId(), editor);
             rectangle.setCrudType("update");
             sendMessage.sendToAllMessage(chatRoom, rectangle);
         } else if (message.getDeleteType().equals(APIMessage.DeleteType.deleteRectangle)) {
