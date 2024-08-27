@@ -166,7 +166,17 @@ public class WebsocketService {
             sendMessage.sendToAllMessage(chatRoom, circle);
         } else if (message.getEditType().equals(APIMessage.EditType.editCircle)) {
             // 원 수정
-            Circle circle = circleService.editCircle(message.getCircle().getCircleId(), CircleEditor.builder().build());
+            CircleEditor editor = CircleEditor.builder()
+                    .x(message.getCircle().getX())
+                    .y(message.getCircle().getY())
+                    .radiusX(message.getCircle().getRadiusX())
+                    .radiusY(message.getCircle().getRadiusY())
+                    .color(message.getCircle().getFill())
+                    .id(message.getCircle().getId())
+                    .type(message.getCircle().getType())
+                    .build();
+
+            Circle circle = circleService.editCircle(message.getCircle().getCircleId(), editor);
             circle.setCrudType("update");
             sendMessage.sendToAllMessage(chatRoom, circle);
         } else if (message.getDeleteType().equals(APIMessage.DeleteType.deleteCircle)) {
