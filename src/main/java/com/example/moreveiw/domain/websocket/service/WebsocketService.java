@@ -108,7 +108,7 @@ public class WebsocketService {
             // 이미지 생성 후 저장
             Image image = imageService.createImage(message);
             Image savedImage = imageService.saveImage(image);
-            if(image.getImageId()==null){
+            if(message.getImage().getImageId()==null){
                 savedImage.setCrudType("create");
             }
             else{
@@ -193,7 +193,7 @@ public class WebsocketService {
         else if (message.getSaveType().equals(APIMessage.SaveType.saveText)) {
             // 텍스트 저장
             Text text = textService.saveText(message.getText());
-            if(text.getTextId()==null){
+            if(message.getText().getTextId()==null){
                 text.setCrudType("create");
             }
             else{
@@ -214,7 +214,7 @@ public class WebsocketService {
         else if (message.getSaveType().equals(APIMessage.SaveType.save3DData)) {
             // 3D 데이터 저장
             ThreeD threeD = threeDService.saveThreeD(message.getThreeD());
-            if(threeD.getThreeDId()==null){
+            if(message.getThreeD().getThreeDId()==null){
                 threeD.setCrudType("create");
             }
             else{
