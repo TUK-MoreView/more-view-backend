@@ -106,15 +106,16 @@ public class WebsocketService {
         /* -------------------------------------------- image -------------------------------------------- */
         else if (message.getSaveType().equals(APIMessage.SaveType.saveImage)) {
             // 이미지 생성 후 저장
-            Image image = imageService.createImage(message);
-            Image savedImage = imageService.saveImage(image);
+            Image image = new Image();
             if(message.getImage().getImageId()==null){
-                savedImage.setCrudType("create");
+                image = imageService.saveImage(message.getImage());
+                image.setCrudType("create");
             }
             else{
-                savedImage.setCrudType("update");
+                image = imageService.saveImage(message.getImage());
+                image.setCrudType("update");
             }
-            sendMessage.sendToAllMessage(chatRoom, savedImage);
+            sendMessage.sendToAllMessage(chatRoom, image);
         } else if (message.getDeleteType().equals(APIMessage.DeleteType.deleteImage)) {
             // 이미지 삭제
             Image image = imageService.createImageForDeletion(message);
@@ -134,17 +135,7 @@ public class WebsocketService {
             sendMessage.sendToAllMessage(chatRoom, rectangle);
         } else if (message.getEditType().equals(APIMessage.EditType.editRectangle)) {
             // 사각형 수정
-            RectangleEditor editor = RectangleEditor.builder()
-                    .x(message.getRectangle().getX())
-                    .y(message.getRectangle().getY())
-                    .width(message.getRectangle().getWidth())
-                    .height(message.getRectangle().getHeight())
-                    .color(message.getRectangle().getFill())
-                    .id(message.getRectangle().getId())
-                    .type(message.getRectangle().getType())
-                    .build();
-
-            Rectangle rectangle = rectangleService.editRectangle(message.getRectangle().getRectangleId(), editor);
+            Rectangle rectangle = rectangleService.editRectangle(message.getRectangle().getRectangleId(), RectangleEditor.builder().build());
             rectangle.setCrudType("update");
             sendMessage.sendToAllMessage(chatRoom, rectangle);
         } else if (message.getDeleteType().equals(APIMessage.DeleteType.deleteRectangle)) {
@@ -202,11 +193,13 @@ public class WebsocketService {
         /* -------------------------------------------- Text -------------------------------------------- */
         else if (message.getSaveType().equals(APIMessage.SaveType.saveText)) {
             // 텍스트 저장
-            Text text = textService.saveText(message.getText());
+            Text text = new Text();
             if(message.getText().getTextId()==null){
+                text = textService.saveText(message.getText());
                 text.setCrudType("create");
             }
             else{
+                text = textService.saveText(message.getText());
                 text.setCrudType("update");
             }
             sendMessage.sendToAllMessage(chatRoom, text);
@@ -223,11 +216,13 @@ public class WebsocketService {
         /* -------------------------------------------- ThreeD -------------------------------------------- */
         else if (message.getSaveType().equals(APIMessage.SaveType.save3DData)) {
             // 3D 데이터 저장
-            ThreeD threeD = threeDService.saveThreeD(message.getThreeD());
+            ThreeD threeD = new ThreeD();
             if(message.getThreeD().getThreeDId()==null){
+                threeD = threeDService.saveThreeD(message.getThreeD());
                 threeD.setCrudType("create");
             }
             else{
+                threeD = threeDService.saveThreeD(message.getThreeD());
                 threeD.setCrudType("update");
             }
             sendMessage.sendToAllMessage(chatRoom, threeD);
