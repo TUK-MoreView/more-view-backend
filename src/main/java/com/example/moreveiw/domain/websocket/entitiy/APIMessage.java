@@ -1,6 +1,7 @@
 package com.example.moreveiw.domain.websocket.entitiy;
 
 import com.example.moreveiw.domain.image.model.dao.Image;
+import com.example.moreveiw.domain.page.model.dao.Page;
 import com.example.moreveiw.domain.shape.circle.model.dao.Circle;
 import com.example.moreveiw.domain.shape.line.model.dao.Line;
 import com.example.moreveiw.domain.shape.rectangle.model.dao.Rectangle;
@@ -13,6 +14,7 @@ public class APIMessage {
 
     public enum SaveType {
         enter,
+        savePage,
         saveImage,
         saveText,
         saveRectangle,
@@ -34,6 +36,7 @@ public class APIMessage {
         enter,
         deleteImage,
         deleteText,
+        deletePage,
         deleteRectangle,
         deleteCircle,
         deleteLine,
@@ -52,4 +55,5 @@ public class APIMessage {
     private Circle circle;
     private Line line;
     private ThreeD threeD;
+    private Page page;
 }
