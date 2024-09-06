@@ -5,6 +5,9 @@
 기존의 PowerPoint 기능을 활용하면서 3D 모델링 기술을 통합한 프레젠테이션 플랫폼
 <br>
 
+## 📺 Demo
+https://github.com/user-attachments/assets/d65ce94b-d999-473b-b3ce-1840a0cc5bee
+
 ## 📖 Tech Stack
 <div>
 <img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white">
