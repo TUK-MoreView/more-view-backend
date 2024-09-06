@@ -1,4 +1,6 @@
 package com.example.moreveiw.domain.websocket.service;
+import com.example.moreveiw.domain.page.model.dao.Page;
+import com.example.moreveiw.domain.page.service.PageService;
 import com.example.moreveiw.domain.shape.circle.model.dao.Circle;
 import com.example.moreveiw.domain.shape.line.model.dao.Line;
 import com.example.moreveiw.domain.shape.rectangle.model.dao.Rectangle;
@@ -40,6 +42,7 @@ public class WebsocketService {
     private final LineService lineService;
     private final SendMessage sendMessage;
     private final ThreeDService threeDService;
+    private final PageService pageService;
 
     // repository 대신 사용
     private Map<String, ProjectRoom> projectRooms;
@@ -253,6 +256,19 @@ public class WebsocketService {
             deletedThreeD.setId(message.getThreeD().getId());
             deletedThreeD.setCrudType("delete");
             sendMessage.sendToAllMessage(chatRoom, deletedThreeD);
+        }
+
+        else if (message.getSaveType().equals(APIMessage.SaveType.savePage)) {
+            Page page = pageService.saveImage(message.getPage());
+            page.setCrudType("create");
+            sendMessage.sendToAllMessage(chatRoom, page);
+        }else if (message.getDeleteType().equals(APIMessage.DeleteType.deletePage)) {
+            pageService.deleteImage(message.getPage());
+            Page deletedPage = new Page();
+            deletedPage.setPageId(message.getPage().getPageId());
+            deletedPage.setCrudType("delete");
+            sendMessage.sendToAllMessage(chatRoom, deletedPage);
+
         }
     }
 }
