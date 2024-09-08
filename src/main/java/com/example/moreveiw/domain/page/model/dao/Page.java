@@ -18,5 +18,6 @@ public class Page {
     private String crudType;
     private Long projectId;
     private Long pageId;
+    private String pageType;
 
 }

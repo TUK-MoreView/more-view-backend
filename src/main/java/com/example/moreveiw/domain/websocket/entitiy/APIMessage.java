@@ -14,7 +14,8 @@ public class APIMessage {
 
     public enum SaveType {
         enter,
-        savePage,
+        save2DPage,
+        save3DPage,
         saveImage,
         saveText,
         saveRectangle,
@@ -36,7 +37,8 @@ public class APIMessage {
         enter,
         deleteImage,
         deleteText,
-        deletePage,
+        delete2DPage,
+        delete3DPage,
         deleteRectangle,
         deleteCircle,
         deleteLine,

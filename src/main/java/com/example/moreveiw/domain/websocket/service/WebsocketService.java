@@ -1,23 +1,23 @@
 package com.example.moreveiw.domain.websocket.service;
-import com.example.moreveiw.domain.page.model.dao.Page;
-import com.example.moreveiw.domain.page.service.PageService;
-import com.example.moreveiw.domain.shape.circle.model.dao.Circle;
-import com.example.moreveiw.domain.shape.line.model.dao.Line;
-import com.example.moreveiw.domain.shape.rectangle.model.dao.Rectangle;
-import com.example.moreveiw.domain.text.model.dao.Text;
-import com.example.moreveiw.domain.threeD.model.dao.ThreeD;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import com.example.moreveiw.domain.image.model.dao.Image;
 import com.example.moreveiw.domain.image.service.ImageService;
+import com.example.moreveiw.domain.page.model.dao.Page;
+import com.example.moreveiw.domain.page.service.PageService;
 import com.example.moreveiw.domain.shape.circle.editor.CircleEditor;
+import com.example.moreveiw.domain.shape.circle.model.dao.Circle;
 import com.example.moreveiw.domain.shape.circle.service.CircleService;
 import com.example.moreveiw.domain.shape.line.editor.LineEditor;
+import com.example.moreveiw.domain.shape.line.model.dao.Line;
 import com.example.moreveiw.domain.shape.line.service.LineService;
 import com.example.moreveiw.domain.shape.rectangle.editor.RectangleEditor;
+import com.example.moreveiw.domain.shape.rectangle.model.dao.Rectangle;
 import com.example.moreveiw.domain.shape.rectangle.service.RectangleService;
+import com.example.moreveiw.domain.text.model.dao.Text;
+import com.example.moreveiw.domain.text.service.TextService;
+import com.example.moreveiw.domain.threeD.model.dao.ThreeD;
 import com.example.moreveiw.domain.threeD.service.ThreeDService;
 import com.example.moreveiw.domain.websocket.bean.SendMessage;
-import com.example.moreveiw.domain.text.service.TextService;
 import com.example.moreveiw.domain.websocket.entitiy.APIMessage;
 import com.example.moreveiw.domain.websocket.entitiy.ProjectRoom;
 import jakarta.annotation.PostConstruct;
@@ -258,17 +258,38 @@ public class WebsocketService {
             sendMessage.sendToAllMessage(chatRoom, deletedThreeD);
         }
 
-        else if (message.getSaveType().equals(APIMessage.SaveType.savePage)) {
-            Page page = pageService.saveImage(message.getPage());
+
+        /* -------------------------------------------- Page -------------------------------------------- */
+        else if (message.getSaveType().equals(APIMessage.SaveType.save2DPage)) {
+            // 2D 페이지 저장
+            Page page = message.getPage();
+            page = pageService.save2DPage(page);
             page.setCrudType("create");
             sendMessage.sendToAllMessage(chatRoom, page);
-        }else if (message.getDeleteType().equals(APIMessage.DeleteType.deletePage)) {
-            pageService.deleteImage(message.getPage());
+        } else if (message.getSaveType().equals(APIMessage.SaveType.save3DPage)) {
+            // 3D 페이지 저장
+            Page page = message.getPage();
+            page = pageService.save3DPage(page);
+            page.setCrudType("create");
+            sendMessage.sendToAllMessage(chatRoom, page);
+        } else if (message.getDeleteType().equals(APIMessage.DeleteType.delete2DPage)) {
+            // 2D 페이지 삭제
+            Page page = message.getPage();
+            pageService.delete2DPage(page);
             Page deletedPage = new Page();
-            deletedPage.setPageId(message.getPage().getPageId());
+            deletedPage.setPageId(page.getPageId());
             deletedPage.setCrudType("delete");
             sendMessage.sendToAllMessage(chatRoom, deletedPage);
-
+        } else if (message.getDeleteType().equals(APIMessage.DeleteType.delete3DPage)) {
+            // 3D 페이지 삭제
+            Page page = message.getPage();
+            pageService.delete3DPage(page);
+            Page deletedPage = new Page();
+            deletedPage.setPageId(page.getPageId());
+            deletedPage.setCrudType("delete");
+            sendMessage.sendToAllMessage(chatRoom, deletedPage);
         }
+
+
     }
 }

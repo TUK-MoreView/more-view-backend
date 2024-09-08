@@ -9,14 +9,22 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class PageService {
-    private final PageRepository imageRepository;
+    private final PageRepository pageRepository;
 
-    public Page saveImage(Page image) {
-        return imageRepository.save(image);
+    public Page save2DPage(Page page) {
+        return pageRepository.save(page);
     }
 
-    public void deleteImage(Page image) {
-        imageRepository.deleteById(image.getPageDBId());
+    public Page save3DPage(Page page) {
+        return pageRepository.save(page);
+    }
+
+    public void delete2DPage(Page page) {
+        pageRepository.deleteById(page.getPageDBId());
+    }
+
+    public void delete3DPage(Page page) {
+        pageRepository.deleteById(page.getPageDBId());
     }
 
 }
